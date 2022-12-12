@@ -113,8 +113,8 @@ I may consider writing a document about the JSON file schema,
 though I think they are pretty self-explanatory.
 
 ### I have other questions
-You may want to check [this](https://github.com/xenesty/AkashaScanner/issues) out and search for answers.
-If you don't find any, please feel free to open a new issue and label it as a `question`.
+You may want to check [this](https://github.com/xenesty/AkashaScanner/discussions) out and search for answers.
+If you don't find any, please feel free to start a new discussion. :)
 
 
 ## Roadmap
