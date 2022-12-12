@@ -1,0 +1,25 @@
+﻿<div class="achievement @(OnIncrement == null ? "" : "achievement--selectable")" @onclick="() => OnIncrement?.Invoke()">
+    <div class="achievement__stars">
+        @for (int i = 0; i < MaxStars; ++i)
+        {
+            <div class="star @(i < CurrentStars ? "star--active" : "")">★</div>
+        }
+    </div>
+    <div class="achievement__title @(CurrentStars == 0 ? "achievement__title--inactive" : "")">
+        @Title
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = default!;
+
+    [Parameter]
+    public int MaxStars { get; set; }
+
+    [Parameter]
+    public int CurrentStars { get; set; }
+
+    [Parameter]
+    public Action? OnIncrement { get; set; }
+}

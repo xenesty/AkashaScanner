@@ -1,0 +1,15 @@
+﻿<div class="full-screen-modal @(Visible ? "" : "full-screen-modal--hidden")">
+    <div class="close" @onclick="OnClose">⨉</div>
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public bool Visible { get; set; }
+
+    [Parameter]
+    public Action OnClose { get; set; } = () => { };
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

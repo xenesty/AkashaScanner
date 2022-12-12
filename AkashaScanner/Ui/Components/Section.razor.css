@@ -1,0 +1,22 @@
+﻿.card {
+    background-color: var(--neutral-bg);
+    color: var(--neutral-text);
+    border-radius: 2px;
+    transition: box-shadow 0.3s ease;
+}
+
+    .card:hover {
+        box-shadow: rgb(13 13 13 / 16%) 0px 1px 2px -2px, rgb(13 13 13 / 12%) 0px 3px 6px 0px, rgb(13 13 13 / 9%) 0px 5px 12px 4px
+    }
+
+.title {
+    padding: 0 24px;
+    font-weight: 700;
+    line-height: 40px;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(143, 132, 117, 0.12);
+}
+
+.content {
+    padding: 8px 24px 16px;
+}

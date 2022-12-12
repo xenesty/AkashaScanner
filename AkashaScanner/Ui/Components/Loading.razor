@@ -1,0 +1,13 @@
+﻿<div class="loading @(Fill ? "loading--fill" : "")">
+    <div class="loading__dots">
+        <div class="loading__dot" />
+        <div class="loading__dot" />
+        <div class="loading__dot" />
+        <div class="loading__dot" />
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public bool Fill { get; set; }
+}

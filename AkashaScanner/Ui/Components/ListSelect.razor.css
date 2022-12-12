@@ -1,0 +1,27 @@
+﻿.listselect {
+    max-height: 100%;
+    border: 1px solid var(--neutral-border);
+    border-radius: 2px;
+    outline: none;
+    overflow: auto;
+    background-color: var(--neutral-bg);
+}
+
+    .listselect:focus {
+        border-color: var(--primary-border);
+    }
+
+.listselect__item {
+    line-height: 2;
+    padding: 0 16px;
+    cursor: pointer;
+}
+
+    .listselect__item:hover {
+        background-color: var(--neutral-bg-hover);
+    }
+
+.listselect__item--active,
+.listselect__item--active:hover {
+    background-color: var(--primary-bg);
+}

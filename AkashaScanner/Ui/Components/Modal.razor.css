@@ -1,0 +1,30 @@
+﻿.modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: grid;
+    place-items: center;
+    background-color: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility .3s, opacity .3s ease;
+    isolation: isolate;
+}
+
+.modal--visible {
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0s, opacity .3s ease;
+}
+
+.modal__box {
+    border-radius: 8px;
+    color: var(--neutral-text);
+    background-color: var(--neutral-bg);
+    box-shadow: 0 6px 16px 0 rgb(0 0 0 / 8%), 0 3px 6px -4px rgb(0 0 0 / 12%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+    padding: 20px 24px;
+    isolation: isolate;
+}

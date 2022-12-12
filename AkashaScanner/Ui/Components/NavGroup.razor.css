@@ -1,0 +1,11 @@
+﻿.nav-group {
+    margin-top: 12px;
+}
+
+.title {
+    color: var(--primary-text);
+    padding: 0 32px 0 16px;
+    font-size: 12px;
+    line-height: 16px;
+    text-transform: uppercase;
+}

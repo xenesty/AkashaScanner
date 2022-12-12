@@ -1,0 +1,41 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+html, body, h1, h2, h3, h4, h5, h6, p, a, button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+body {
+    line-height: 1;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+input, textarea, select {
+    font: inherit;
+    appearance: none;
+    outline: none;
+    background: inherit;
+    color: inherit;
+}
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}

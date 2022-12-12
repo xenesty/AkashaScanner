@@ -1,0 +1,13 @@
+﻿<div class="modal @(Visible ? "modal--visible" : "")">
+    <div class="modal__box">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public bool Visible { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

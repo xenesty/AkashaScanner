@@ -1,0 +1,29 @@
+﻿.card {
+    background-color: var(--neutral-bg);
+    color: var(--neutral-text);
+    padding: 20px 24px 16px;
+    height: 144px;
+    border: 1px solid var(--primary-border);
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    flex: none;
+    color: var(--primary-text);
+    font-weight: 700;
+}
+
+.body {
+    flex: 1 1 0;
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: 8px;
+    white-space: nowrap;
+}
+
+.actions {
+    flex: none;
+    display: flex;
+    justify-content: flex-end;
+}

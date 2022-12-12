@@ -1,0 +1,11 @@
+﻿<Section Title="Game Data Update">
+    <div class="notice">This may take up to a few minutes. Data charges may apply.</div>
+    <div class="data-update">
+        @ChildContent
+    </div>
+</Section>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

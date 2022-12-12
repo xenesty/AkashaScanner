@@ -1,0 +1,15 @@
+﻿.status {
+    font-weight: 700;
+}
+
+.status--running {
+    color: var(--primary-text);
+}
+
+.status--stopped {
+    color: var(--error-text);
+}
+
+.status--loading {
+    color: var(--warn-text);
+}

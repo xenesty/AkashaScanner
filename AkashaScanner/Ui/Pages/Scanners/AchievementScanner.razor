@@ -1,0 +1,118 @@
+﻿@inherits RazorComponent
+@page "/scanners/achievement"
+
+@using Core.DataCollections
+@using Core.Scappers
+@using Core.DataFiles
+
+@inject IConfig ScrapConfig
+@inject IAchievementCollection AchievementCollection
+@inject IScrapper<IAchievementConfig> AchievementScrapper
+@inject IDataFileRepository<AchievementOutput> AchievementDataFiles
+
+<Scanner Enabled="@Enabled" OnSubmit="@HandleSubmit">
+    <Instructions>
+        <li>Update game data below if needed.</li>
+        <li>Start the game. Game is currently <ProcessStatusDisplay />.</li>
+        <li>Open your <b>Achievements</b> screen and select any category. You should see a search bar near the top left corner.</li>
+        <li>Some achievements have conflicting names and will be skipped during the scan. You may manually provide the status of these achievements below.</li>
+        <li>You may optionally select a previously scanned record so that completed achievements will not be scanned again.</li>
+        <li>Click the "Start" button below to start scanning. Please do not move the mouse or press any buttons.</li>
+        <li>If you wish to interrupt the scan, minimize or exit the game (using Alt+Tab).</li>
+    </Instructions>
+    <DataUpdates>
+        <DataUpdate Title="Achievements" Collection="@AchievementCollection" Status="@AchievementCollectionStatus" EntryType="@(typeof(AchievementEntry))" />
+    </DataUpdates>
+    <Options>
+        <div class="options">
+            @if (Overlapping.Count > 0)
+            {
+                <AchievementEditor @bind-Value="ScrapConfig.AchievementOverrides" Options="@Overlapping" />
+            }
+            <DataFileListOptional Title="Use an existing scan record"
+                                  TitleNegative="Do not use existing scan records"
+                                  FileList="@FileList" @bind-Value="@SelectedFile" />
+        </div>
+    </Options>
+</Scanner>
+
+@code {
+    [Flux.GetDataCollectionStatus(typeof(AchievementEntry))]
+    public Flux.DataCollectionStatus _AchievementCollectionStatus
+    {
+        get => AchievementCollectionStatus;
+        set
+        {
+            if (value.IsAvailable)
+            {
+                var entries = AchievementCollection.ListOverlappingAchievements();
+                Overlapping = IAchievementCollection.GroupByCategory(entries);
+            }
+            AchievementCollectionStatus = value;
+        }
+    }
+
+    public Flux.DataCollectionStatus AchievementCollectionStatus { get; set; } = default!;
+
+    [Flux.GetProcessStatus]
+    public ProcessStatus Status { get; set; }
+
+    private List<IDataFile<AchievementOutput>> FileList { get; set; } = new();
+
+    public IDataFile<AchievementOutput>? SelectedFile { get; set; } = default!;
+
+    private List<AchievementCategoryEntry> Overlapping { get; set; } = new();
+
+    public bool Enabled => AchievementCollectionStatus.IsAvailable;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Initialize();
+        FileList = AchievementDataFiles.List();
+        SelectedFile = FileList.FirstOrDefault();
+        await ScrapConfig.Load();
+    }
+
+    public bool HandleSubmit()
+    {
+        Dictionary<int, bool> overrides = new();
+        foreach (var cat in Overlapping)
+        {
+            foreach (var entry in cat.Achievements)
+            {
+                foreach (var id in entry.Ids)
+                {
+                    overrides[id] = ScrapConfig.AchievementOverrides.TryGetValue(id, out var val) && val;
+                }
+            }
+        }
+        ScrapConfig.AchievementOverrides = overrides;
+        ScrapConfig.Save();
+
+        if (SelectedFile == null || !SelectedFile.Read(out var output))
+        {
+            return AchievementScrapper.Start(ScrapConfig);
+        }
+
+        FormData data = new()
+            {
+                AchievementOverrides = new(overrides),
+            };
+        foreach (var (key, _) in output)
+        {
+            data.AchievementOverrides[key] = true;
+        }
+        return AchievementScrapper.Start(data);
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        AchievementScrapper.Dispose();
+    }
+
+    private class FormData : IAchievementConfig
+    {
+        public Dictionary<int, bool> AchievementOverrides { get; set; } = new();
+    }
+}

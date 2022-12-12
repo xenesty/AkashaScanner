@@ -1,0 +1,19 @@
+﻿<EditForm EditContext="Context" @onsubmit:preventDefault>
+    <DataAnnotationsValidator />
+    <div class="form">
+        <div class="form__fields">
+            @ChildContent
+        </div>
+        <div class="form__validations">
+            <ValidationSummary />
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public EditContext Context { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

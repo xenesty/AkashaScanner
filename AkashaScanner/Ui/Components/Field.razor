@@ -1,0 +1,12 @@
+﻿<div class="field">
+    <div class="label">@Label</div>
+    <div class="content">@ChildContent</div>
+</div>
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = "";
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

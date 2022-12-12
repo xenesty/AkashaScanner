@@ -1,0 +1,9 @@
+﻿.form {
+    display: flex;
+}
+
+.form__fields {
+    flex: none;
+    width: 240px;
+    margin-right: 20px;
+}

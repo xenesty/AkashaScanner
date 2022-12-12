@@ -1,0 +1,22 @@
+﻿.nav-item {
+    cursor: pointer;
+    margin: 8px 0;
+    padding: 0 32px 0 16px;
+    border-right: 2px solid transparent;
+    line-height: 40px;
+    transition: border-color .3s, background .3s, padding .1s ease;
+}
+
+    .nav-item:hover {
+        color: var(--primary-text);
+    }
+
+.nav-item--indent {
+    padding-left: 32px;
+}
+
+.active .nav-item {
+    background-color: var(--primary-bg-dark);
+    color: var(--primary-text);
+    border-color: var(--primary-border);
+}

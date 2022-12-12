@@ -1,0 +1,108 @@
+﻿@inherits RazorComponent
+@page "/scanners/weapon"
+
+@using Core.DataCollections
+@using Core.Scappers
+
+@inject IConfig ScrapConfig
+@inject IWeaponCollection WeaponCollection
+@inject ICharacterCollection CharacterCollection
+@inject IScrapper<IWeaponConfig> WeaponScrapper
+
+<Scanner Model="@Data" Enabled="@Enabled" OnSubmit="@HandleSubmit">
+    <Instructions>
+        <li>Update game data below if needed.</li>
+        <li>Fill in the options below.</li>
+        <li>Start the game. Game is currently <ProcessStatusDisplay />.</li>
+        <li>Open the inventory. Select the <b>"Weapons"</b> tab.</li>
+        <li>Sort items in <b>descending</b> order.</li>
+        <li>Scroll to the top so that the first row is completely visible.</li>
+        <li>Make sure the weapon's name on the right side is fully visible as well.</li>
+        <li>Click the "Start" button below to start scanning. Please do not move the mouse or press any buttons.</li>
+        <li>If you wish to interrupt the scan, minimize or exit the game (using Alt+Tab).</li>
+    </Instructions>
+    <DataUpdates>
+        <DataUpdate Title="Weapons" Collection="@WeaponCollection" Status="@WeaponCollectionStatus" EntryType="@(typeof(WeaponEntry))" />
+        <DataUpdate Title="Characters" Collection="@CharacterCollection" Status="@CharacterCollectionStatus" EntryType="@(typeof(CharacterEntry))" />
+    </DataUpdates>
+    <Options>
+        <Field Label="@TravelerNameLabel">
+            <InputText class="input" DisplayName="@TravelerNameLabel" @bind-Value="Data.TravelerName" />
+        </Field>
+        <Field Label="@MinLevelLabel">
+            <InputNumber class="input" DisplayName="@MinLevelLabel" @bind-Value="Data.WeaponMinLevel" />
+        </Field>
+        <Field Label="@MinRarityLabel">
+            <InputNumber class="input" DisplayName="@MinRarityLabel" @bind-Value="Data.WeaponMinRarity" />
+        </Field>
+    </Options>
+</Scanner>
+
+@code {
+    private const string TravelerNameLabel = "Traveler's Name";
+    private const string MinLevelLabel = "Minimum Level";
+    private const string MinRarityLabel = "Minimum Rarity";
+
+    private IWeaponConfig Data = new DefaultFormData();
+
+    [Flux.GetDataCollectionStatus(typeof(WeaponEntry))]
+    public Flux.DataCollectionStatus WeaponCollectionStatus { get; set; } = default!;
+
+    [Flux.GetDataCollectionStatus(typeof(CharacterEntry))]
+    public Flux.DataCollectionStatus CharacterCollectionStatus { get; set; } = default!;
+
+    [Flux.GetProcessStatus]
+    public ProcessStatus Status { get; set; }
+
+    public bool Enabled => WeaponCollectionStatus.IsAvailable && CharacterCollectionStatus.IsAvailable;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Initialize();
+        await ScrapConfig.Load();
+        Data = new FormData(ScrapConfig);
+    }
+
+    public bool HandleSubmit()
+    {
+        ScrapConfig.Save();
+        return WeaponScrapper.Start(Data);
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        WeaponScrapper.Dispose();
+    }
+
+    private class FormData : IWeaponConfig
+    {
+        private readonly IWeaponConfig ScrapConfig;
+
+        public FormData(IWeaponConfig scrapConfig)
+        {
+            ScrapConfig = scrapConfig;
+        }
+
+        [Display(Name = TravelerNameLabel)]
+        [Required]
+        public string TravelerName { get => ScrapConfig.TravelerName; set => ScrapConfig.TravelerName = value; }
+
+        [Display(Name = MinLevelLabel)]
+        [Required]
+        [Range(1, 90)]
+        public int WeaponMinLevel { get => ScrapConfig.WeaponMinLevel; set => ScrapConfig.WeaponMinLevel = value; }
+
+        [Display(Name = MinRarityLabel)]
+        [Required]
+        [Range(1, 5)]
+        public int WeaponMinRarity { get => ScrapConfig.WeaponMinRarity; set => ScrapConfig.WeaponMinRarity = value; }
+    }
+
+    private class DefaultFormData : IWeaponConfig
+    {
+        public string TravelerName { get; set; } = string.Empty;
+        public int WeaponMinLevel { get; set; }
+        public int WeaponMinRarity { get; set; }
+    }
+}

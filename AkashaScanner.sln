@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AkashaScanner", "AkashaScanner\AkashaScanner.csproj", "{2460AC45-799C-40D5-BF9C-DEA26111F322}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AAD3EB18-29A3-45F3-9B93-76ABE9157A26}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Headless|x64 = Headless|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Debug|x64.ActiveCfg = Debug|x64
+		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Debug|x64.Build.0 = Debug|x64
+		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Headless|x64.ActiveCfg = Headless|x64
+		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Headless|x64.Build.0 = Headless|x64
+		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Release|x64.ActiveCfg = Release|x64
+		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {120CF4FD-7F56-44B2-822F-17744CF72F9D}
+	EndGlobalSection
+EndGlobal

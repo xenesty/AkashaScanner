@@ -1,0 +1,59 @@
+﻿@typeparam TOutput where TOutput : class
+
+@using Core.DataFiles
+
+<div class="data-file-list-optional">
+    <div class="row">
+        <input type="radio" id="@NegName" class="radio"
+               checked="@(Value == null)" @onchange="() => ValueChanged.InvokeAsync(null)" />
+        <label for="@NegName" class="label">@TitleNegative</label>
+    </div>
+    <div class="row">
+        <input type="radio" id="@PosName" class="radio"
+               disabled="@(FileList.Count == 0)"
+               checked="@(Value != null)" @onchange="() => ValueChanged.InvokeAsync(FileList.FirstOrDefault())" />
+        <label for="@PosName" class="label">@Title</label>
+    </div>
+    @if (Value != null)
+    {
+        <div class="list">
+            <ListSelect Options="@FileList"
+                    Value="@Value"
+                    ValueChanged="@ValueChanged">
+                <ItemFragment>
+                    @context!.CreatedAt.ToString("yyyy-MM-dd, HH:mm") (@context!.Count items)
+                </ItemFragment>
+            </ListSelect>
+        </div>
+    }
+</div>
+
+@code {
+    private static System.Random rand = new();
+
+    [Parameter]
+    public string Title { get; set; } = "Select a scan record:";
+
+    [Parameter]
+    public string TitleNegative { get; set; } = "Do not select a record";
+
+    [Parameter]
+    public IDataFile<TOutput>? Value { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<IDataFile<TOutput>?> ValueChanged { get; set; }
+
+    [Parameter]
+    public List<IDataFile<TOutput>> FileList { get; set; } = new();
+
+    private string NegName { get; set; } = string.Empty;
+    private string PosName { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        var k = rand.Next();
+        NegName = $"data-file-list-optional__radio__negative--{k}";
+        PosName = $"data-file-list-optional__radio__positive--{k}";
+    }
+}

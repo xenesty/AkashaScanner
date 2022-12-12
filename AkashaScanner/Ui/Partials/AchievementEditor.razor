@@ -1,0 +1,57 @@
+﻿<div>
+    @foreach (var cat in Options)
+    {
+        <Collapsible Title="@(cat.Name)" DefaultCollapsed="@DefaultCollapsed">
+            @foreach (var entry in cat.Achievements)
+            {
+                <AchievementItem MaxStars="@(entry.Ids.Count)"
+                         Title="@(entry.Name)"
+                         CurrentStars="@(GetCurrentStars(entry))"
+                         OnIncrement="() => OnIncrement(entry)" />
+            }
+        </Collapsible>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<AchievementCategoryEntry> Options { get; set; } = default!;
+
+    [Parameter]
+    public Dictionary<int, bool> Value { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<Dictionary<int, bool>> ValueChanged { get; set; }
+
+    [Parameter]
+    public bool DefaultCollapsed { get; set; }
+
+    private int GetCurrentStars(AchievementEntry entry)
+    {
+        int count = entry.Ids.Count;
+        for (int i = 0; i < count; ++i)
+        {
+            if (!Value.TryGetValue(entry.Ids[i], out var val) || !val) return i;
+        }
+        return count;
+    }
+
+    private void OnIncrement(AchievementEntry entry)
+    {
+        int count = entry.Ids.Count;
+        int current = GetCurrentStars(entry);
+        if (current == count)
+        {
+            foreach (var id in entry.Ids)
+            {
+                Value[id] = false;
+            }
+        }
+        else
+        {
+            Value[entry.Ids[current]] = true;
+        }
+        ValueChanged.InvokeAsync(Value);
+
+    }
+}

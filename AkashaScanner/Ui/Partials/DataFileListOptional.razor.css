@@ -1,0 +1,36 @@
+﻿.data-file-list-optional {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    flex: none;
+    line-height: 1.5;
+    display: flex;
+    padding: 4px 0;
+}
+
+.radio {
+    cursor: pointer;
+    margin: 2px 8px 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #999;
+    transition: 0.2s all linear;
+}
+
+
+    .radio:checked {
+        border: 6px solid var(--primary-border);
+    }
+
+.label {
+    cursor: pointer;
+}
+
+.list {
+    flex: 1 1 0;
+    min-height: 0;
+    display: grid;
+}

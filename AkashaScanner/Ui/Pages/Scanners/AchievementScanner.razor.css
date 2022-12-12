@@ -1,0 +1,9 @@
+﻿.options {
+    min-height: 200px;
+    max-height: 600px;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    column-gap: 16px;
+}

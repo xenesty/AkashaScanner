@@ -1,0 +1,69 @@
+﻿@inherits RazorComponent
+
+@using Core.DataCollections
+
+<div class="card">
+    <div class="title">@Title</div>
+    @if (Status.IsLoading)
+    {
+        <div class="body">
+            <Loading Fill />
+        </div>
+    }
+    else
+    {
+        <div class="body">
+            @if (Status.IsOutdated)
+            {
+                <span>Outdated</span>
+            }
+            else
+            {
+                <span>Last Updated:</span> <span>@($"{Status.LastUpdate:yyyy-MM-dd HH:mm}")</span>
+            }
+        </div>
+        <div class="actions">
+            <button type="button" class="button button--primary" @onclick="OnUpdate" disabled="@(Status.IsLoading)">Update</button>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    [Parameter]
+    public Type EntryType { get; set; } = default!;
+
+    [Parameter]
+    public IDataCollection Collection { get; set; } = default!;
+
+    [Parameter]
+    public Flux.DataCollectionStatus Status { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Initialize();
+
+        if (!Collection.IsLoaded())
+        {
+            await Collection.LoadLocal();
+        }
+
+        if (Collection.IsLoaded())
+        {
+            Flux.Dispatch(new SetDataCollectionStatusAction() { LastUpdate = Collection.GetLastUpdate(), EntryType = EntryType });
+        }
+        else
+        {
+            Flux.Dispatch(new SetDataCollectionStatusAction() { IsOutdated = true, EntryType = EntryType });
+        }
+    }
+
+    public async Task OnUpdate()
+    {
+        Flux.Dispatch(new SetDataCollectionStatusAction() { IsLoading = true, EntryType = EntryType });
+        await Collection.LoadRemote();
+        Flux.Dispatch(new SetDataCollectionStatusAction() { LastUpdate = Collection.GetLastUpdate(), EntryType = EntryType });
+    }
+}

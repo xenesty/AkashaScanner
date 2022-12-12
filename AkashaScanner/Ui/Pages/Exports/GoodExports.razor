@@ -1,0 +1,58 @@
+﻿@inherits RazorComponent
+@page "/exports/good"
+
+@using Core.Exporters
+@using Core.DataFiles
+@using Core.DataCollections
+@inject IDataFileRepository<WeaponOutput> WeaponDataFiles
+@inject IWeaponCollection WeaponCollections
+@inject IDataFileRepository<ArtifactOutput> ArtifactDataFiles
+@inject IArtifactCollection ArtifactCollections
+@inject IDataFileRepository<CharacterOutput> CharacterDataFiles
+@inject ICharacterCollection CharacterCollections
+@inject IJSRuntime JS
+
+<ExportLayout Enabled="@Enabled" OnSubmit="@HandleSubmit">
+    <DataFileListOptional Title="Export weapons"
+                          TitleNegative="Do not export weapons"
+                          FileList="@WeaponFileList" @bind-Value="@SelectedWeaponFile" />
+    <DataFileListOptional Title="Export artifacts"
+                          TitleNegative="Do not export artifacts"
+                          FileList="@ArtifactFileList" @bind-Value="@SelectedArtifactFile" />
+    <DataFileListOptional Title="Export characters"
+                          TitleNegative="Do not export characters"
+                          FileList="@CharacterFileList" @bind-Value="@SelectedCharacterFile" />
+</ExportLayout>
+
+@code {
+    private IDataFile<WeaponOutput>? SelectedWeaponFile { get; set; }
+    private List<IDataFile<WeaponOutput>> WeaponFileList { get; set; } = new();
+
+    private IDataFile<ArtifactOutput>? SelectedArtifactFile { get; set; }
+    private List<IDataFile<ArtifactOutput>> ArtifactFileList { get; set; } = new();
+
+    private IDataFile<CharacterOutput>? SelectedCharacterFile { get; set; }
+    private List<IDataFile<CharacterOutput>> CharacterFileList { get; set; } = new();
+
+    private bool Enabled => SelectedWeaponFile != null || SelectedArtifactFile != null || SelectedCharacterFile != null;
+
+    protected override Task OnInitializedAsync()
+    {
+        Initialize();
+        WeaponFileList = WeaponDataFiles.List();
+        SelectedWeaponFile = WeaponFileList.FirstOrDefault();
+        ArtifactFileList = ArtifactDataFiles.List();
+        SelectedArtifactFile = ArtifactFileList.FirstOrDefault();
+        CharacterFileList = CharacterDataFiles.List();
+        SelectedCharacterFile = CharacterFileList.FirstOrDefault();
+        return Task.CompletedTask;
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (Enabled && GoodExporter.Export(out var str, SelectedWeaponFile, SelectedArtifactFile, SelectedCharacterFile))
+        {
+            await JS.InvokeAsync<bool>("__akasha_saveAsJson", "GOOD.json", str);
+        }
+    }
+}

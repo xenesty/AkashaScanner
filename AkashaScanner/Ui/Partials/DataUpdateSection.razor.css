@@ -1,0 +1,18 @@
+﻿.data-update {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 224px);
+    grid-template-rows: auto;
+    column-gap: 12px;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+}
+
+.notice {
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 8px;
+}

@@ -1,0 +1,16 @@
+﻿<NavLink href="@Link">
+    <div class="nav-item @(IsInsideNavGroup ? "nav-item--indent" : "")">
+        <div class="title">@Title</div>
+    </div>
+</NavLink>
+
+@code {
+    [CascadingParameter(Name = "IsInsideNavGroup")]
+    public bool IsInsideNavGroup { get; set; }
+
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    [Parameter]
+    public string Link { get; set; } = "";
+}

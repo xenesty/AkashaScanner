@@ -1,0 +1,40 @@
+﻿@inherits RazorComponent
+@inject Flux flux
+
+@using AkashaScanner.Core.ProcessControl
+@inject IProcessControl Process
+
+<CascadingValue Value="flux">
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p>404 not found</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingValue>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        Flux = flux;
+        Initialize();
+        await Task.Delay(300);
+        AppEvents.Load();
+        Process.OnStatusChange += OnProcessStatusChange;
+    }
+
+    private void OnProcessStatusChange(ProcessStatus status)
+    {
+        Flux.Dispatch(new SetProcessStatusAction() { Status = status });
+    }
+
+    public override void Dispose()
+    {
+        Process.OnStatusChange -= OnProcessStatusChange;
+        base.Dispose();
+    }
+}

@@ -1,0 +1,41 @@
+﻿.cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.instructions {
+    line-height: 1.5;
+}
+
+.actions {
+    margin: 20px 0;
+    display: flex;
+    font-size: 18px;
+    justify-content: center;
+}
+
+.button--action {
+    font-size: 20px;
+    padding: 8px 25px;
+}
+
+.modal__content {
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 20px;
+}
+
+.status-icon {
+    font-size: 36px;
+}
+
+.status-icon--success {
+    fill: var(--primary-text-light);
+}
+
+.status-icon--failed {
+    fill: var(--error-text);
+}

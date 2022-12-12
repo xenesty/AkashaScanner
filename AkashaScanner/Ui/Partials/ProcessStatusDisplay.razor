@@ -1,0 +1,19 @@
+﻿@inherits RazorComponent
+
+@if (Status == ProcessStatus.Stopped)
+{
+    <span class="status status--stopped">not running</span>
+}
+else if (Status == ProcessStatus.Unknown)
+{
+    <span class="status status--loading">loading</span>
+}
+else
+{
+    <span class="status status--running">running</span>
+}
+
+@code {
+    [Flux.GetProcessStatus]
+    public ProcessStatus Status { get; set; }
+}

@@ -1,0 +1,42 @@
+﻿.achievement {
+    display: flex;
+    align-items: center;
+    height: 36px;
+}
+
+.achievement--selectable {
+    cursor: pointer;
+}
+
+.achievement__stars {
+    width: 32px;
+    height: 32px;
+    padding: 2px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--neutral-border);
+    border-radius: 4px;
+}
+
+.achievement__title {
+    margin-left: 8px;
+}
+
+.achievement__title--inactive {
+    color: #6f7475;
+}
+
+.star {
+    font-size: 16px;
+    line-height: 14px;
+    width: 14px;
+    height: 14px;
+    text-align: center;
+    color: var(--neutral-bg);
+}
+
+.star--active {
+    color: var(--neutral-text);
+}

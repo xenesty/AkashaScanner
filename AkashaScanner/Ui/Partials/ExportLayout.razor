@@ -1,0 +1,20 @@
+﻿<div class="export-layout">
+    <div class="actions">
+        <button type="button" class="button button--primary button--action" disabled="@(!Enabled)" @onclick="OnSubmit">Export</button>
+    </div>
+    <div class="content">
+        @ChildContent
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+
+    [Parameter]
+    public bool Enabled { get; set; }
+}

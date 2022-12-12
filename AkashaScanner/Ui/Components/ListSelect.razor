@@ -1,0 +1,24 @@
+﻿@typeparam TItem where TItem : class
+
+<div class="listselect" tabindex="-1">
+    @foreach (var item in Options)
+    {
+        <div class="listselect__item @(item == Value ? "listselect__item--active" : "")" @onclick="() => ValueChanged.InvokeAsync(item) ?? Task.CompletedTask">
+            @ItemFragment(item)
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<TItem> Options { get; set; } = default!;
+
+    [Parameter]
+    public TItem Value { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<TItem> ValueChanged { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItem> ItemFragment { get; set; } = default!;
+}

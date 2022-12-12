@@ -1,0 +1,10 @@
+﻿.collapsible__title {
+    padding: 0 8px;
+    line-height: 2;
+    cursor: pointer;
+    background-color: var(--neutral-border);
+}
+
+.collapsible__content {
+    padding: 8px;
+}

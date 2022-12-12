@@ -1,0 +1,79 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <RootNamespace>AkashaScanner</RootNamespace>
+        <Nullable>enable</Nullable>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <UseWindowsForms>true</UseWindowsForms>
+        <ApplicationIcon>Logo.ico</ApplicationIcon>
+        <Configurations>Debug;Release;Headless</Configurations>
+        <Platforms>x64</Platforms>
+        <Title>Akasha Scanner</Title>
+        <Version>0.1.0</Version>
+        <Copyright>MIT</Copyright>
+        <RepositoryUrl>https://github.com/xenesty/AkashaScanner</RepositoryUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageProjectUrl>https://github.com/xenesty/AkashaScanner</PackageProjectUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <NeutralLanguage>en</NeutralLanguage>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="publish\**" />
+        <Content Remove="publish\**" />
+        <EmbeddedResource Remove="publish\**" />
+        <None Remove="publish\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FuzzySharp" Version="2.0.2" />
+        <PackageReference Include="InputSimulatorCore" Version="1.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="6.0.547" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+        <PackageReference Include="MimeTypes" Version="2.4.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="OpenCvSharp4" Version="4.6.0.20220608" />
+        <PackageReference Include="OpenCvSharp4.Extensions" Version="4.6.0.20220608" />
+        <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.6.0.20220608" />
+        <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
+        <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+        <PackageReference Include="Tesseract" Version="4.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Resources\tessdata\genshin_eng.traineddata">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\lock.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove=".gitignore" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Logo.ico" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\LICENSE.txt">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+      <None Include="..\README.md">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+    </ItemGroup>
+
+</Project>

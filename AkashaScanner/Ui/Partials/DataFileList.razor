@@ -1,0 +1,30 @@
+﻿@typeparam TOutput where TOutput : class
+
+@using Core.DataFiles
+
+<div class="data-file-list">
+    <div class="title">@Title</div>
+    <div class="content">
+        <ListSelect Options="@FileList"
+                    Value="@Value"
+                    ValueChanged="@ValueChanged">
+            <ItemFragment>
+                @context!.CreatedAt.ToString("yyyy-MM-dd, HH:mm") (@context!.Count items)
+            </ItemFragment>
+        </ListSelect>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "Select a scan record:";
+
+    [Parameter]
+    public IDataFile<TOutput>? Value { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<IDataFile<TOutput>?> ValueChanged { get; set; }
+
+    [Parameter]
+    public List<IDataFile<TOutput>> FileList { get; set; } = new();
+}
