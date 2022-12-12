@@ -58,15 +58,18 @@ namespace AkashaScanner.Core.Exporters
                         charOb["wish"] = 0;
                         charOb["manual"] = character.Constellation + 1;
                     }
-                    else if (charOb.TryGetValue("default", out var defaultConsToken))
-                    {
-                        var defaultCons = defaultConsToken.ToObject<int>();
-                        charOb["manual"] = character.Constellation + 1 - defaultCons;
-                    }
                     else
                     {
-
-                        charOb["manual"] = character.Constellation + 1;
+                        var manual = character.Constellation + 1;
+                        if (charOb.TryGetValue("default", out var defaultConsToken))
+                        {
+                            manual -= defaultConsToken.ToObject<int>();
+                        }
+                        if (charOb.TryGetValue("wish", out var wishConsToken))
+                        {
+                            manual -= wishConsToken.ToObject<int>();
+                        }
+                        charOb["manual"] = manual;
                     }
                 }
             }
