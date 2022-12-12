@@ -1,6 +1,6 @@
 # Akasha Scanner
 
-A Genshin Impact tool for extracting game data, including achievements, characters, artifacts, and weapons.
+A Genshin Impact tool that extracts your account data, including achievements, characters, artifacts, and weapons.
 
 
 ## Table of Contents
@@ -20,7 +20,7 @@ A Genshin Impact tool for extracting game data, including achievements, characte
 ## Features
 
 - Scans achievements, characters, artifacts, and weapons by taking and analyzing screenshots of the game automatically
-- Exports achievements (and characters) to [Paimon.moe](https://paimon.moe)
+- Exports achievements (and characters) to a format compatible with [Paimon.moe](https://paimon.moe), a tool for you to track your achievement progress
 - Exports game data in `GOOD`,
 a format compatible with tools like
 [Genshin Optimizer](https://frzyc.github.io/genshin-optimizer),
@@ -111,6 +111,11 @@ I will work on this shortly. Stay tuned for a new release!
 For now, you can modify the JSON file under the `ScannedData` folder.
 I may consider writing a document about the JSON file schema,
 though I think they are pretty self-explanatory.
+
+### How do I import the scan results to Paimon.moe?
+First, export your scan results to a format compatible with Paimon.moe using the Akasha Scanner.
+Then, go to [Settings](https://paimon.moe/settings) in Paimon.moe.
+Select "Export & Import Data" and import the file you just exported.
 
 ### I have other questions
 You may want to check [this](https://github.com/xenesty/AkashaScanner/discussions) out and search for answers.
