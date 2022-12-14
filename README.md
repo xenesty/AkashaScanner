@@ -2,6 +2,8 @@
 
 A Genshin Impact tool that extracts your account data, including achievements, characters, artifacts, and weapons.
 
+[Demo video for achievement scanning](https://github.com/xenesty/AkashaScanner/discussions/3)
+
 
 ## Table of Contents
 
