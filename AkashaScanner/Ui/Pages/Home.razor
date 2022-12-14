@@ -7,7 +7,20 @@
     <p>
         <a class="link" href="https://github.com/xenesty/AkashaScanner/blob/master/README.md" target="_blank">Home page</a>
     </p>
+    @if (UpdateUrl != null)
+    {
+        <p>
+            A new update is available <a class="link" href="@UpdateUrl" target="_blank">here</a>.
+        </p>
+    }
 </div>
 
 @code {
+    private string? UpdateUrl { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        UpdateUrl = await AppUpdate.Check();
+    }
+
 }
