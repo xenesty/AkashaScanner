@@ -113,7 +113,7 @@ namespace AkashaScanner.Core.Artifacts
             RarityStarAreaMax = Win.Scale(Win.Scale(155));
         }
 
-        protected override Artifact ProcessImage(Bitmap image)
+        protected override Artifact ProcessImage(Bitmap image, IArtifactConfig config)
         {
             using var ocr = Ocr.GetInstance();
             Artifact artifact = new();
@@ -121,7 +121,7 @@ namespace AkashaScanner.Core.Artifacts
             LoadRarity(image, artifact);
             LoadLevel(ocr, image, artifact);
             LoadSubStats(ocr, image, artifact);
-            LoadEquipped(ocr, image, artifact);
+            LoadEquipped(ocr, image, artifact, config.CharacterNameOverrides);
             Logger.LogInformation("Artifact: {artifact}", artifact);
             return artifact;
         }
@@ -219,9 +219,9 @@ namespace AkashaScanner.Core.Artifacts
             }
         }
 
-        private void LoadEquipped(ITextRecognitionService ocr, Bitmap image, Artifact artifact)
+        private void LoadEquipped(ITextRecognitionService ocr, Bitmap image, Artifact artifact, Dictionary<string, string> CharacterNameOverrides)
         {
-            var character = GetEquipped(ocr, image);
+            var character = GetEquipped(ocr, image, CharacterNameOverrides);
             if (character != null)
             {
                 artifact.EquippedCharacter = character.Name;

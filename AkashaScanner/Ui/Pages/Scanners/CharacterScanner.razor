@@ -25,11 +25,15 @@
         <Field Label="@MinLevelLabel">
             <InputNumber class="input" DisplayName="@MinLevelLabel" @bind-Value="Data.CharacterMinLevel" />
         </Field>
+        <Field Label="@WandererNameLabel">
+            <InputText class="input" DisplayName="@WandererNameLabel" @bind-Value="WandererName" />
+        </Field>
     </Options>
 </Scanner>
 
 @code {
     private const string MinLevelLabel = "Minimum Level";
+    private const string WandererNameLabel = "Wanderer's Name";
 
     private ICharacterConfig Data = new DefaultFormData();
 
@@ -41,6 +45,8 @@
 
     public bool Enabled => CharacterCollectionStatus.IsAvailable;
 
+    private string WandererName { get; set; } = string.Empty;
+
     protected override async Task OnInitializedAsync()
     {
         Initialize();
@@ -50,6 +56,10 @@
 
     public bool HandleSubmit()
     {
+        if (string.IsNullOrEmpty(WandererName))
+            ScrapConfig.CharacterNameOverrides.Remove("Wanderer");
+        else
+            ScrapConfig.CharacterNameOverrides["Wanderer"] = WandererName;
         ScrapConfig.Save();
         return CharacterScrapper.Start(Data);
     }
@@ -73,10 +83,14 @@
         [Required]
         [Range(1, 90)]
         public int CharacterMinLevel { get => ScrapConfig.CharacterMinLevel; set => ScrapConfig.CharacterMinLevel = value; }
+
+        [Display(Name = WandererNameLabel)]
+        public Dictionary<string, string> CharacterNameOverrides { get => ScrapConfig.CharacterNameOverrides; set => ScrapConfig.CharacterNameOverrides = value; }
     }
 
     private class DefaultFormData : ICharacterConfig
     {
         public int CharacterMinLevel { get; set; }
+        public Dictionary<string, string> CharacterNameOverrides { get; set; } = new();
     }
 }

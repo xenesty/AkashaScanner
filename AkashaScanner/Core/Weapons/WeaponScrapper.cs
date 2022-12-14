@@ -78,13 +78,13 @@ namespace AkashaScanner.Core.Weapons
             LevelRect = Win.ScaleRectangle(20, 206, 84, 18);
         }
 
-        protected override Weapon ProcessImage(Bitmap image)
+        protected override Weapon ProcessImage(Bitmap image, IWeaponConfig config)
         {
             using var ocr = Ocr.GetInstance();
             Weapon weapon = new();
             LoadEntry(ocr, image, weapon);
             LoadLevel(ocr, image, weapon);
-            LoadEquipped(ocr, image, weapon);
+            LoadEquipped(ocr, image, weapon, config.CharacterNameOverrides);
             Logger.LogInformation("Weapon: {weapon}", weapon);
             return weapon;
         }
@@ -126,9 +126,9 @@ namespace AkashaScanner.Core.Weapons
             }
         }
 
-        private void LoadEquipped(ITextRecognitionService ocr, Bitmap image, Weapon weapon)
+        private void LoadEquipped(ITextRecognitionService ocr, Bitmap image, Weapon weapon, Dictionary<string, string> CharacterNameOverrides)
         {
-            var character = GetEquipped(ocr, image);
+            var character = GetEquipped(ocr, image, CharacterNameOverrides);
             if (character != null)
             {
                 weapon.EquippedCharacter = character.Name;

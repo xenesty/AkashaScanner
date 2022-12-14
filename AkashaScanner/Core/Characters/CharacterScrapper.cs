@@ -24,6 +24,7 @@ namespace AkashaScanner.Core.Characters
     {
         private static readonly string LockImageFile = Path.Combine(Utils.ExecutableDirectory, "Resources", "lock.png");
         private const double ConstellationLockScore = 0.8;
+        private const int CharacterNameOverridesScore = 70;
         private const int ElementScore = 70;
         private const int FriendshipScore = 70;
         private const int TalentBonusScore = 85;
@@ -128,7 +129,7 @@ namespace AkashaScanner.Core.Characters
             };
         }
 
-        protected override void Execute(ICharacterConfig _)
+        protected override void Execute(ICharacterConfig config)
         {
             StartMonitoringProcess();
             ScrapPlan.Activate();
@@ -145,7 +146,7 @@ namespace AkashaScanner.Core.Characters
                 // Capture Attributes
                 var attributesImg = Screenshots.Capture(AttributesRect);
                 CharacterEntry? entry = null;
-                var loadEntryTask = queue.Add(() => entry = LoadEntry(attributesImg, character));
+                var loadEntryTask = queue.Add(() => entry = LoadEntry(attributesImg, character, config.CharacterNameOverrides));
                 var loadLevelTask = queue.Add(() => LoadLevel(attributesImg, character));
 
                 // Select Constellation
@@ -245,7 +246,7 @@ namespace AkashaScanner.Core.Characters
             return dest;
         }
 
-        private CharacterEntry? LoadEntry(Bitmap image, Character character)
+        private CharacterEntry? LoadEntry(Bitmap image, Character character, Dictionary<string, string> CharacterNameOverrides)
         {
             var friendship = Ocr.FindText(image, FriendshipRect, true);
             var hasFriendship = ProcessFriendship(character, friendship);
@@ -253,7 +254,7 @@ namespace AkashaScanner.Core.Characters
             {
                 // Is not the traveler
                 var name = Ocr.FindText(image, NameRect, true);
-                return ProcessName(character, name);
+                return ProcessName(character, name, CharacterNameOverrides);
             }
             else
             {
@@ -294,16 +295,28 @@ namespace AkashaScanner.Core.Characters
             character.Ascension = ascension;
         }
 
-        private CharacterEntry? ProcessName(Character character, string text)
+        private CharacterEntry? ProcessName(Character character, string text, Dictionary<string, string> CharacterNameOverrides)
         {
-            var asciiText = Regex.Replace(text, @"[^a-zA-Z ]", string.Empty).Trim();
-            var entry = CharacterCollection.PartialSearchByName(asciiText);
+            text = Regex.Replace(text, @"[^a-zA-Z ]", string.Empty).Trim();
+            foreach (var (actualName, givenName) in CharacterNameOverrides)
+            {
+                var score = givenName.PartialSearch(text);
+                if (score > CharacterNameOverridesScore)
+                {
+                    text = actualName;
+                    break;
+                }
+            }
+            var entry = CharacterCollection.PartialSearchByName(text);
             if (entry != null)
             {
                 character.Name = entry.Name;
                 character.Rarity = entry.Rarity;
                 character.WeaponType = entry.WeaponType;
                 character.Element = entry.Element;
+            }
+            else
+            {
             }
             return entry;
         }

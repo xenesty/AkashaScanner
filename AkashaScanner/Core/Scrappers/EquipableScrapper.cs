@@ -6,15 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Threading;
 
 namespace AkashaScanner.Core.Scappers
 {
-    public abstract class EquipableScrapper<R, E, C> : BaseInventoryScrapper<R, E, C> where E : class, IEntry where C : IBaseScrapConfig, ITravelerNameConfig
+    public abstract class EquipableScrapper<R, E, C> : BaseInventoryScrapper<R, E, C> where E : class, IEntry where C : IBaseScrapConfig, ITravelerNameConfig, ICharacterNamesConfig
     {
         protected ICharacterCollection CharacterCollection { get; init; } = default!;
 
         private const int IsUnrelatedMinScore = 90;
+        private const int CharacterNameOverridesScore = 70;
         protected abstract List<string> UnrelatedItems { get; }
 
         private Rectangle ItemCountRect;
@@ -28,7 +28,7 @@ namespace AkashaScanner.Core.Scappers
             EquippedRect = Win.ScaleRectangle(136, Win.RefHeight - 190, 190, 25);
         }
 
-        private void Run(TaskQueue tasks)
+        private void Run(TaskQueue tasks, C config)
         {
             int order = 0;
             StartMonitoringProcess();
@@ -58,7 +58,7 @@ namespace AkashaScanner.Core.Scappers
                     var col = i % columns;
                     Navigation.SelectItem(row, col);
                     var img = GetInfoImg();
-                    tasks.Add((k) => CreateTask(img, k), ++order);
+                    tasks.Add((k) => CreateTask(img, k, config), ++order);
                     if (++counter == itemCount) return;
                 }
             }
@@ -78,7 +78,7 @@ namespace AkashaScanner.Core.Scappers
                         if (ShouldStop()) return;
                         Navigation.SelectItem(row, col);
                         var img = GetInfoImg();
-                        tasks.Add((k) => CreateTask(img, k), ++order);
+                        tasks.Add((k) => CreateTask(img, k, config), ++order);
                         if (++counter == itemCount) return;
                     }
                 }
@@ -94,7 +94,7 @@ namespace AkashaScanner.Core.Scappers
                 if (ShouldStop()) return;
                 Navigation.SelectItemOnLastPage(unrelatedRows, col);
                 var img = GetInfoImg();
-                tasks.Add((k) => CreateTask(img, k), ++order);
+                tasks.Add((k) => CreateTask(img, k, config), ++order);
             }
         }
 
@@ -102,7 +102,7 @@ namespace AkashaScanner.Core.Scappers
         {
             TaskQueue tasks = new();
             TravelerName = config.TravelerName;
-            Run(tasks);
+            Run(tasks, config);
             StopMonitoringProcess();
             tasks.WaitAll();
             if (!Interrupted)
@@ -111,12 +111,12 @@ namespace AkashaScanner.Core.Scappers
             }
         }
 
-        protected abstract R ProcessImage(Bitmap image);
+        protected abstract R ProcessImage(Bitmap image, C config);
 
-        private void CreateTask(Bitmap image, int order)
+        private void CreateTask(Bitmap image, int order, C config)
         {
             if (ScrapPlan.ShouldStopProcessing(order)) return;
-            var data = ProcessImage(image);
+            var data = ProcessImage(image, config);
             var result = ScrapPlan.Add(data, order);
             if (result.ShouldKeep())
                 ResultHandler.Add(data, order);
@@ -145,9 +145,18 @@ namespace AkashaScanner.Core.Scappers
             }
         }
 
-        protected CharacterEntry? GetEquipped(ITextRecognitionService ocr, Bitmap image)
+        protected CharacterEntry? GetEquipped(ITextRecognitionService ocr, Bitmap image, Dictionary<string, string> CharacterNameOverrides)
         {
             var text = ocr.FindText(image, EquippedRect).Trim();
+            foreach (var (actualName, givenName) in CharacterNameOverrides)
+            {
+                var score = givenName.FuzzySearch(text);
+                if (score > CharacterNameOverridesScore)
+                {
+                    text = actualName;
+                    break;
+                }
+            }
             var entry = CharacterCollection.SearchByName(text, TravelerName);
             return entry;
         }

@@ -29,6 +29,9 @@
         <Field Label="@TravelerNameLabel">
             <InputText class="input" DisplayName="@TravelerNameLabel" @bind-Value="Data.TravelerName" />
         </Field>
+        <Field Label="@WandererNameLabel">
+            <InputText class="input" DisplayName="@WandererNameLabel" @bind-Value="WandererName" />
+        </Field>
         <Field Label="@MinLevelLabel">
             <InputNumber class="input" DisplayName="@MinLevelLabel" @bind-Value="Data.ArtifactMinLevel" />
         </Field>
@@ -40,6 +43,7 @@
 
 @code {
     private const string TravelerNameLabel = "Traveler's Name";
+    private const string WandererNameLabel = "Wanderer's Name";
     private const string MinLevelLabel = "Minimum Level";
     private const string MinRarityLabel = "Minimum Rarity";
 
@@ -56,6 +60,8 @@
 
     public bool Enabled => ArtifactCollectionStatus.IsAvailable && CharacterCollectionStatus.IsAvailable;
 
+    private string WandererName { get; set; } = string.Empty;
+
     protected override async Task OnInitializedAsync()
     {
         Initialize();
@@ -65,6 +71,10 @@
 
     public bool HandleSubmit()
     {
+        if (string.IsNullOrEmpty(WandererName))
+            ScrapConfig.CharacterNameOverrides.Remove("Wanderer");
+        else
+            ScrapConfig.CharacterNameOverrides["Wanderer"] = WandererName;
         ScrapConfig.Save();
         return ArtifactScrapper.Start(Data);
     }
@@ -88,6 +98,9 @@
         [Required]
         public string TravelerName { get => ScrapConfig.TravelerName; set => ScrapConfig.TravelerName = value; }
 
+        [Display(Name = WandererNameLabel)]
+        public Dictionary<string, string> CharacterNameOverrides { get => ScrapConfig.CharacterNameOverrides; set => ScrapConfig.CharacterNameOverrides = value; }
+
         [Display(Name = MinLevelLabel)]
         [Required]
         [Range(0, 20)]
@@ -102,6 +115,7 @@
     private class DefaultFormData : IArtifactConfig
     {
         public string TravelerName { get; set; } = string.Empty;
+        public Dictionary<string, string> CharacterNameOverrides { get; set; } = new();
         public int ArtifactMinLevel { get; set; }
         public int ArtifactMinRarity { get; set; }
     }

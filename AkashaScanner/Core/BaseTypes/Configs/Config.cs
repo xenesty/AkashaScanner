@@ -28,6 +28,7 @@ namespace AkashaScanner.Core
         public int ArtifactMinLevel { get; set; } = 0;
         public int ArtifactMinRarity { get; set; } = 1;
         public int CharacterMinLevel { get; set; } = 1;
+        public Dictionary<string, string> CharacterNameOverrides { get; set; } = new();
         public Dictionary<int, bool> AchievementOverrides { get; set; } = new();
 
         public async Task Load()
