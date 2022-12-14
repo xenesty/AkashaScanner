@@ -1,5 +1,6 @@
 ﻿using AkashaScanner.Core.DataFiles;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -22,6 +23,46 @@ namespace AkashaScanner.Core.Exporters
                 ["source"] = "AkashaScanner",
             };
 
+            string TravelerName = string.Empty;
+
+            if (characterFile != null)
+            {
+                if (!characterFile.Read(out var data))
+                {
+                    output = null;
+                    return false;
+                }
+                JArray arr = new();
+                foreach (var character in data)
+                {
+                    if (!character.IsValid()) continue;
+                    JObject dict = new()
+                    {
+                        ["key"] = ToKey(character.Name),
+                        ["level"] = character.Level,
+                        ["constellation"] = character.Constellation,
+                        ["ascension"] = character.Ascension,
+                        ["talent"] = new JObject()
+                        {
+                            ["auto"] = character.AttackLevel,
+                            ["skill"] = character.SkillLevel,
+                            ["burst"] = character.BurstLevel,
+                        },
+                    };
+                    if (character.Name.Contains("Traveler"))
+                    {
+                        TravelerName = character.Name;
+                    }
+                    arr.Add(dict);
+                }
+                obj["characters"] = arr;
+            }
+
+            string GetEqupped(string name)
+            {
+                return ToKey(!string.IsNullOrEmpty(TravelerName) && name == "Traveler" ? TravelerName : name);
+            }
+
             if (weaponFile != null)
             {
                 if (!weaponFile.Read(out var data))
@@ -39,7 +80,7 @@ namespace AkashaScanner.Core.Exporters
                         ["level"] = weapon.Level,
                         ["ascension"] = weapon.Ascension,
                         ["refinement"] = weapon.Refinement,
-                        ["location"] = ToKey(weapon.EquippedCharacter),
+                        ["location"] = GetEqupped(weapon.EquippedCharacter),
                         ["lock"] = weapon.Locked,
                     };
                     arr.Add(dict);
@@ -75,42 +116,13 @@ namespace AkashaScanner.Core.Exporters
                         ["level"] = artifact.Level,
                         ["rarity"] = artifact.Rarity,
                         ["mainStatKey"] = StatKeys[artifact.MainStat],
-                        ["location"] = ToKey(artifact.EquippedCharacter),
+                        ["location"] = GetEqupped(artifact.EquippedCharacter),
                         ["lock"] = artifact.Locked,
                         ["substats"] = substats,
                     };
                     arr.Add(dict);
                 }
                 obj["artifacts"] = arr;
-            }
-
-            if (characterFile != null)
-            {
-                if (!characterFile.Read(out var data))
-                {
-                    output = null;
-                    return false;
-                }
-                JArray arr = new();
-                foreach (var character in data)
-                {
-                    if (!character.IsValid()) continue;
-                    JObject dict = new()
-                    {
-                        ["key"] = ToKey(character.Name),
-                        ["level"] = character.Level,
-                        ["constellation"] = character.Constellation,
-                        ["ascension"] = character.Ascension,
-                        ["talent"] = new JObject()
-                        {
-                            ["auto"] = character.AttackLevel,
-                            ["skill"] = character.SkillLevel,
-                            ["burst"] = character.BurstLevel,
-                        },
-                    };
-                    arr.Add(dict);
-                }
-                obj["characters"] = arr;
             }
 
             output = obj.ToString();
