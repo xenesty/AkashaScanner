@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-
-namespace AkashaScanner.Core
+﻿namespace AkashaScanner.Core
 {
     public class TaskQueue
     {

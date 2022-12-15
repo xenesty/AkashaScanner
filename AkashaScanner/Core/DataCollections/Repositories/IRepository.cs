@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace AkashaScanner.Core.DataCollections.Repositories
+﻿namespace AkashaScanner.Core.DataCollections.Repositories
 {
     public interface IRepository<E> where E : class
     {

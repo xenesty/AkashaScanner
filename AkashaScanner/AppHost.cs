@@ -2,9 +2,10 @@
 using AkashaScanner.Ui.StateManagerment;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+#if RELEASE
 using Microsoft.Extensions.Logging;
-using Serilog;
-using System;
+#endif
 
 namespace AkashaScanner
 {

@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 
 namespace AkashaScanner.Core.DataFiles
 {
@@ -44,7 +42,7 @@ namespace AkashaScanner.Core.DataFiles
                 data = default!;
                 return false;
             }
-            
+
         }
 
         public void Write(T value)

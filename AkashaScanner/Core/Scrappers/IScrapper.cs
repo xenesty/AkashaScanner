@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AkashaScanner.Core.Scappers
+﻿namespace AkashaScanner.Core.Scappers
 {
     public interface IScrapper<C> : IDisposable where C : IBaseScrapConfig
     {

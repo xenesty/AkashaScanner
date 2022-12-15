@@ -2,10 +2,6 @@
 using AkashaScanner.Core.ScrapPlans;
 using AkashaScanner.Core.TextRecognition;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 
 namespace AkashaScanner.Core.Scappers
 {

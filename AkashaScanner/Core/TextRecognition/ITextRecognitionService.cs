@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-
-namespace AkashaScanner.Core.TextRecognition
+﻿namespace AkashaScanner.Core.TextRecognition
 {
     public interface ITextRecognitionService : IDisposable
     {

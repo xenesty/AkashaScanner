@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AkashaScanner.Core.DataFiles
+﻿namespace AkashaScanner.Core.DataFiles
 {
     public interface IDataFileRepository<T>
     {

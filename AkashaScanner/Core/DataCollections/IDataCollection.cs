@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace AkashaScanner.Core.DataCollections
+﻿namespace AkashaScanner.Core.DataCollections
 {
     public interface IDataCollection
     {

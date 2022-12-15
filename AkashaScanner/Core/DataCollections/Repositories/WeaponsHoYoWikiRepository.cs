@@ -1,7 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace AkashaScanner.Core.DataCollections.Repositories
 {

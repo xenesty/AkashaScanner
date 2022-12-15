@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
 
 namespace AkashaScanner.Ui.StateManagerment
 {
     public partial class Flux
-    { 
+    {
         public void Dispatch(IAction action)
         {
             Logger.LogDebug("Dispatch {action}", action);

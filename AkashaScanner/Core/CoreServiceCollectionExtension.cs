@@ -1,25 +1,24 @@
-﻿using AkashaScanner.Core.Artifacts;
+﻿using AkashaScanner.Core.Achievements;
+using AkashaScanner.Core.Artifacts;
 using AkashaScanner.Core.Characters;
 using AkashaScanner.Core.DataCollections;
 using AkashaScanner.Core.DataCollections.Repositories;
 using AkashaScanner.Core.DataFiles;
+using AkashaScanner.Core.Navigation.Achievement;
 using AkashaScanner.Core.Navigation.Character;
 using AkashaScanner.Core.Navigation.Inventory;
+using AkashaScanner.Core.Navigation.Keyboard;
 using AkashaScanner.Core.Navigation.Mouse;
 using AkashaScanner.Core.ProcessControl;
 using AkashaScanner.Core.ResultHandler;
 using AkashaScanner.Core.Scappers;
-using AkashaScanner.Core.Screenshot;
 using AkashaScanner.Core.ScrapPlans;
+using AkashaScanner.Core.Screenshot;
+using AkashaScanner.Core.Suspender;
 using AkashaScanner.Core.TextRecognition;
 using AkashaScanner.Core.TextRecognition.Tesseract;
 using AkashaScanner.Core.Weapons;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
-using AkashaScanner.Core.Achievements;
-using AkashaScanner.Core.Navigation.Achievement;
-using AkashaScanner.Core.Navigation.Keyboard;
-using AkashaScanner.Core.Suspender;
 
 namespace AkashaScanner.Core
 {

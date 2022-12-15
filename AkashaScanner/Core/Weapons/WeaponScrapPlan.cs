@@ -15,7 +15,7 @@ namespace AkashaScanner.Core.Weapons
         {
             if (config.WeaponMinLevel > 1)
                 return new ByLevelScrapPlan(Navigation) { MinRarity = config.WeaponMinRarity, MinLevel = config.WeaponMinLevel };
-            else if(config.WeaponMinRarity > 1)
+            else if (config.WeaponMinRarity > 1)
                 return new ByRarityScrapPlan(Navigation) { MinRarity = config.WeaponMinRarity };
             else
                 return new BasicScrapPlan();

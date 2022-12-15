@@ -1,10 +1,5 @@
 ﻿using FuzzySharp;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace AkashaScanner.Core
 {

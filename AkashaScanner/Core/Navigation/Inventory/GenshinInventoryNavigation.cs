@@ -1,8 +1,6 @@
 ﻿using AkashaScanner.Core.Navigation.Mouse;
 using AkashaScanner.Core.Suspender;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading;
 
 namespace AkashaScanner.Core.Navigation.Inventory
 {

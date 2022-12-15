@@ -15,15 +15,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
+		Headless|Any CPU = Headless|Any CPU
 		Headless|x64 = Headless|x64
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Debug|Any CPU.Build.0 = Debug|x64
 		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Debug|x64.ActiveCfg = Debug|x64
 		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Debug|x64.Build.0 = Debug|x64
+		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Headless|Any CPU.ActiveCfg = Headless|x64
+		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Headless|Any CPU.Build.0 = Headless|x64
 		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Headless|x64.ActiveCfg = Headless|x64
 		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Headless|x64.Build.0 = Headless|x64
+		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Release|Any CPU.ActiveCfg = Release|x64
+		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Release|Any CPU.Build.0 = Release|x64
 		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Release|x64.ActiveCfg = Release|x64
 		{2460AC45-799C-40D5-BF9C-DEA26111F322}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection

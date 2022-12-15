@@ -1,5 +1,3 @@
-using System;
-
 #if HEADLESS
 using AkashaScanner.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +6,6 @@ using AkashaScanner.Core.Scappers;
 using AkashaScanner.Core.DataCollections;
 #else
 using AkashaScanner.Ui;
-using System.Windows.Forms;
 #endif
 
 namespace AkashaScanner

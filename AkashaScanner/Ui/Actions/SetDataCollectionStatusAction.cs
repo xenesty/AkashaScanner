@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AkashaScanner.Ui.StateManagerment
+﻿namespace AkashaScanner.Ui.StateManagerment
 {
     public record SetDataCollectionStatusAction : IAction
     {

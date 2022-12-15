@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace AkashaScanner.Core.DataCollections
+﻿namespace AkashaScanner.Core.DataCollections
 {
     public interface IAchievementCollection : IDataCollection, IEnumerable<AchievementCategoryEntry>
     {

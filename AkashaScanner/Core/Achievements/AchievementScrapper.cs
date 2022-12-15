@@ -1,17 +1,15 @@
-﻿using AkashaScanner.Core.ProcessControl;
+﻿using AkashaScanner.Core.DataCollections;
+using AkashaScanner.Core.Navigation.Achievement;
+using AkashaScanner.Core.ProcessControl;
 using AkashaScanner.Core.ResultHandler;
 using AkashaScanner.Core.Scappers;
-using AkashaScanner.Core.Screenshot;
 using AkashaScanner.Core.ScrapPlans;
+using AkashaScanner.Core.Screenshot;
+using AkashaScanner.Core.Suspender;
 using AkashaScanner.Core.TextRecognition;
 using Microsoft.Extensions.Logging;
-using AkashaScanner.Core.Navigation.Achievement;
-using System.Drawing;
-using OpenCvSharp.Extensions;
 using OpenCvSharp;
-using System;
-using AkashaScanner.Core.DataCollections;
-using AkashaScanner.Core.Suspender;
+using OpenCvSharp.Extensions;
 
 namespace AkashaScanner.Core.Achievements
 {

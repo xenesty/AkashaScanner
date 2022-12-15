@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace AkashaScanner.Core
+﻿namespace AkashaScanner.Core
 {
     public interface IConfig : IGlobalConfig, IWeaponConfig, IArtifactConfig, ICharacterConfig, IAchievementConfig
     {

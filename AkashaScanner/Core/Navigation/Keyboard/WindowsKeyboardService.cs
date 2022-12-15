@@ -1,7 +1,6 @@
 ﻿using AkashaScanner.Core.ProcessControl;
 using AkashaScanner.Core.Suspender;
 using Microsoft.Extensions.Logging;
-using System.Threading;
 using WindowsInput;
 using WindowsInput.Native;
 

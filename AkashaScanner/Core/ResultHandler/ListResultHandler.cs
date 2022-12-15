@@ -1,8 +1,5 @@
 ﻿using AkashaScanner.Core.DataFiles;
 using Microsoft.Extensions.Logging;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AkashaScanner.Core.ResultHandler
 {

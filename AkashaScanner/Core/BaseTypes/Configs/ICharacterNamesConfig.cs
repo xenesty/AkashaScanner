@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AkashaScanner.Core
+﻿namespace AkashaScanner.Core
 {
     public interface ICharacterNamesConfig
     {

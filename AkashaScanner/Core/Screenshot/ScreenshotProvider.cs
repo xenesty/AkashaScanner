@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace AkashaScanner.Core.Screenshot

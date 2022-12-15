@@ -1,8 +1,4 @@
-﻿using AkashaScanner.Core;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Extensions.Logging;
 using System.Reflection;
 
 namespace AkashaScanner.Ui.StateManagerment

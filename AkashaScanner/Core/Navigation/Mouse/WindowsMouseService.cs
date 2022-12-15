@@ -2,7 +2,6 @@
 using AkashaScanner.Core.Suspender;
 using Microsoft.Extensions.Logging;
 using System.Runtime.InteropServices;
-using System.Threading;
 using WindowsInput;
 
 namespace AkashaScanner.Core.Navigation.Mouse

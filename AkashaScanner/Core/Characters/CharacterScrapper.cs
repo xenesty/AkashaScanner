@@ -3,20 +3,15 @@ using AkashaScanner.Core.Navigation.Character;
 using AkashaScanner.Core.ProcessControl;
 using AkashaScanner.Core.ResultHandler;
 using AkashaScanner.Core.Scappers;
-using AkashaScanner.Core.Screenshot;
 using AkashaScanner.Core.ScrapPlans;
+using AkashaScanner.Core.Screenshot;
+using AkashaScanner.Core.Suspender;
 using AkashaScanner.Core.TextRecognition;
 using Microsoft.Extensions.Logging;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
-using AkashaScanner.Core.Suspender;
 
 namespace AkashaScanner.Core.Characters
 {

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AkashaScanner.Core
+﻿namespace AkashaScanner.Core
 {
     public interface IAchievementConfig : IBaseScrapConfig
     {

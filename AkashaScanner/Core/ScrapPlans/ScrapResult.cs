@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AkashaScanner.Core.ScrapPlans
+﻿namespace AkashaScanner.Core.ScrapPlans
 {
     [Flags]
     public enum ScrapResult

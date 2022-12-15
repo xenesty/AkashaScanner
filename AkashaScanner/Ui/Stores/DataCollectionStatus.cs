@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AkashaScanner.Ui.StateManagerment
+﻿namespace AkashaScanner.Ui.StateManagerment
 {
     public partial class Flux
     {

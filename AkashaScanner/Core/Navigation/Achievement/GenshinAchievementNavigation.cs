@@ -2,9 +2,6 @@
 using AkashaScanner.Core.Navigation.Mouse;
 using AkashaScanner.Core.Suspender;
 using Microsoft.Extensions.Logging;
-using System.Linq;
-using System.Threading;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace AkashaScanner.Core.Navigation.Achievement
 {

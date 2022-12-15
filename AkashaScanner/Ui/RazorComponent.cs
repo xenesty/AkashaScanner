@@ -1,9 +1,7 @@
 ﻿using AkashaScanner.Ui.StateManagerment;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace AkashaScanner.Ui
 {

@@ -1,12 +1,10 @@
 ﻿using AkashaScanner.Core.ProcessControl;
 using AkashaScanner.Core.ResultHandler;
-using AkashaScanner.Core.Screenshot;
 using AkashaScanner.Core.ScrapPlans;
+using AkashaScanner.Core.Screenshot;
+using AkashaScanner.Core.Suspender;
 using AkashaScanner.Core.TextRecognition;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading;
-using AkashaScanner.Core.Suspender;
 
 namespace AkashaScanner.Core.Scappers
 {

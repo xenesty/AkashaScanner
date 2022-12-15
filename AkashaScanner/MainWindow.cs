@@ -1,6 +1,5 @@
 ﻿using AkashaScanner.Ui;
 using Microsoft.AspNetCore.Components.WebView.WindowsForms;
-using System.Windows.Forms;
 
 namespace AkashaScanner
 {

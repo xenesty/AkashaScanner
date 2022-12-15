@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AkashaScanner.Core
+﻿namespace AkashaScanner.Core
 {
     public sealed record Weapon
     {

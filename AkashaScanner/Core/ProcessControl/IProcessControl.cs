@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace AkashaScanner.Core.ProcessControl
+﻿namespace AkashaScanner.Core.ProcessControl
 {
     public interface IProcessControl
     {

@@ -8,6 +8,7 @@
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <UseWindowsForms>true</UseWindowsForms>
+        <ImplicitUsings>enable</ImplicitUsings>
         <ApplicationIcon>Logo.ico</ApplicationIcon>
         <Configurations>Debug;Release;Headless</Configurations>
         <Platforms>x64</Platforms>

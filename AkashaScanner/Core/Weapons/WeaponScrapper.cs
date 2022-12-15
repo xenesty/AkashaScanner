@@ -3,14 +3,12 @@ using AkashaScanner.Core.Navigation.Inventory;
 using AkashaScanner.Core.ProcessControl;
 using AkashaScanner.Core.ResultHandler;
 using AkashaScanner.Core.Scappers;
-using AkashaScanner.Core.Screenshot;
 using AkashaScanner.Core.ScrapPlans;
+using AkashaScanner.Core.Screenshot;
+using AkashaScanner.Core.Suspender;
 using AkashaScanner.Core.TextRecognition;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Text.RegularExpressions;
-using AkashaScanner.Core.Suspender;
 
 namespace AkashaScanner.Core.Weapons
 {

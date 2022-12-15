@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace AkashaScanner.Core.Screenshot
+﻿namespace AkashaScanner.Core.Screenshot
 {
     public interface IScreenshotProvider
     {
