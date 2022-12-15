@@ -21,7 +21,7 @@ namespace AkashaScanner.Core.Suspender
             if (ms > 0)
             {
                 var time = GetTime(ms);
-                Logger.LogDebug("Sleep {time}", time);
+                Logger.LogTrace("Sleep {time}", time);
                 Thread.Sleep(time);
             }
         }
