@@ -13,6 +13,11 @@ namespace AkashaScanner.Core.TextRecognition.Tesseract
         private static readonly string TrainedDataPath = Path.Combine(Utils.ExecutableDirectory, "Resources", "tessdata");
         private const string TrainedDataLanguage = "genshin_eng";
 
+        static TesseractService()
+        {
+            TesseractEnviornment.CustomSearchPath = Utils.ExecutableDirectory;
+        }
+
         private static float NormalFn(byte red, byte green, byte blue)
         {
             return red * .3f + green * .59f + blue * .11f;
