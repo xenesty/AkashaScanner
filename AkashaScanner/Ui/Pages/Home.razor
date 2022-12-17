@@ -1,8 +1,10 @@
 ﻿@page "/home"
 
+@inject AppUpdate AppUpdate
+
 <div class="content">
     <p>
-        Welcome to the Akasha Scanner!
+        Welcome to the Akasha Scanner! (version @(Utils.AppVersion.ToString(3)))
     </p>
     <p>
         <a class="link" href="https://github.com/xenesty/AkashaScanner/blob/master/README.md" target="_blank">Home page</a>
@@ -10,17 +12,30 @@
     @if (UpdateUrl != null)
     {
         <p>
-            A new update is available <a class="link" href="@UpdateUrl" target="_blank">here</a>.
+            A new update is available. <span class="link" @onclick="StartUpdate">Download now</span>.
         </p>
     }
 </div>
 
+<Modal Visible="@Updating">
+    <div class="modal__content">
+        <div>Downloading Latest Update</div>
+        <Loading />
+    </div>
+</Modal>
+
 @code {
     private string? UpdateUrl { get; set; } = null;
+    private bool Updating { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         UpdateUrl = await AppUpdate.Check();
     }
 
+    private async Task StartUpdate()
+    {
+        Updating = true;
+        await AppUpdate.StartUpdate(UpdateUrl!);
+    }
 }

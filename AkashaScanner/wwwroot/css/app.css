@@ -76,6 +76,7 @@ html, body, #app {
     color: var(--primary-text);
     text-decoration: underline;
     display: inline;
+    cursor: pointer;
 }
 
     .link:hover {

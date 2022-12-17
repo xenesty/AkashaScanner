@@ -28,6 +28,7 @@ namespace AkashaScanner.Core
         {
             services
                 .AddScoped<GameWindow>()
+                .AddSingleton<AppUpdate>()
                 .AddSingleton<ISuspender, RandomSuspender>()
                 .AddSingleton<IProcessControl, GenshinProcessControl>()
                 .AddScoped<ITextRecognitionService, TesseractService>()

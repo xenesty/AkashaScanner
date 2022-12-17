@@ -1,11 +1,13 @@
 ﻿using FuzzySharp;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace AkashaScanner.Core
 {
     public static class Utils
     {
-        public static readonly string ExecutableDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        public static readonly string ExecutableDirectory = AppDomain.CurrentDomain.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar);
+        public static readonly Version AppVersion = Assembly.GetExecutingAssembly().GetName().Version!;
 
         public static void WaitFor(this Task task, int ms)
         {
