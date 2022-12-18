@@ -298,6 +298,7 @@ namespace AkashaScanner.Core.Characters
                 var score = givenName.PartialSearch(text);
                 if (score > CharacterNameOverridesScore)
                 {
+                    Logger.LogInformation("Identify {text} as {actualName}", text, actualName);
                     text = actualName;
                     break;
                 }
@@ -312,6 +313,7 @@ namespace AkashaScanner.Core.Characters
             }
             else
             {
+                Logger.LogWarning("Fail to find a character matching {text}", text);
             }
             return entry;
         }
@@ -333,6 +335,7 @@ namespace AkashaScanner.Core.Characters
                     return entry;
                 }
             }
+            Logger.LogWarning("Fail to identify Traveler's element: {text}", text);
             return null;
         }
 

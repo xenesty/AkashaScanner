@@ -111,6 +111,10 @@ namespace AkashaScanner.Core.Weapons
                 weapon.Level = level;
                 weapon.Ascension = ascension;
             }
+            else
+            {
+                Logger.LogWarning("Fail to identify the level of weapon: {text}", text);
+            }
         }
 
         private void LoadRefinement(ITextRecognitionService ocr, Bitmap image, Weapon weapon)
@@ -120,7 +124,10 @@ namespace AkashaScanner.Core.Weapons
             if (int.TryParse(text, out int refinement))
             {
                 weapon.Refinement = refinement;
-                return;
+            }
+            else
+            {
+                Logger.LogWarning("Fail to identify the refinement of weapon: {text}", text);
             }
         }
 

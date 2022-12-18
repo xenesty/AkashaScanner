@@ -12,6 +12,7 @@ using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AkashaScanner.Core.Artifacts
 {
@@ -147,6 +148,10 @@ namespace AkashaScanner.Core.Artifacts
             {
                 artifact.MainStat = MainStatsMapping[value!];
             }
+            else
+            {
+                Logger.LogWarning("Fail to identify the main stat of artifact: {text}", text);
+            }
         }
 
         private void LoadRarity(Bitmap image, Artifact artifact)
@@ -169,6 +174,10 @@ namespace AkashaScanner.Core.Artifacts
                     ++rarity;
             }
             artifact.Rarity = rarity;
+            if (rarity == 0)
+            {
+                Logger.LogWarning("Fail to identify the rarity of artifact");
+            }
         }
 
         private void LoadLevel(ITextRecognitionService ocr, Bitmap image, Artifact artifact)
@@ -178,6 +187,10 @@ namespace AkashaScanner.Core.Artifacts
             if (int.TryParse(text, out int level))
             {
                 artifact.Level = level;
+            }
+            else
+            {
+                Logger.LogWarning("Fail to identify the level of artifact: {text}", text);
             }
         }
 
