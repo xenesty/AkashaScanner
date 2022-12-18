@@ -16,10 +16,15 @@ namespace AkashaScanner.Core.Characters
         {
             public int MinLevel { get; init; }
 
-            public override ScrapResult OnReceive(Character item)
+            public override ScrapResult OnReceive(Character item, int order)
             {
                 if (item.Level < MinLevel)
-                    return ScrapResult.ShouldDrop | ScrapResult.ShouldStop;
+                {
+                    if (order > 4)
+                        return ScrapResult.ShouldDrop | ScrapResult.ShouldStop;
+                    else
+                        return ScrapResult.ShouldDrop;
+                }
 
                 return ScrapResult.None;
             }

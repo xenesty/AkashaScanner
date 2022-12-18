@@ -36,7 +36,7 @@ namespace AkashaScanner.Core.Artifacts
                 Navigation.SelectSortOrder(0);
             }
 
-            public override ScrapResult OnReceive(Artifact item)
+            public override ScrapResult OnReceive(Artifact item, int _)
             {
                 if (item.Rarity < MinRarity)
                     return ScrapResult.ShouldDrop | ScrapResult.ShouldStop;
@@ -61,7 +61,7 @@ namespace AkashaScanner.Core.Artifacts
                 Navigation.SelectSortOrder(1);
             }
 
-            public override ScrapResult OnReceive(Artifact item)
+            public override ScrapResult OnReceive(Artifact item, int _)
             {
                 if (item.Level < MinLevel || (item.Level == MinLevel && item.Rarity < MinRarity))
                     return ScrapResult.ShouldDrop | ScrapResult.ShouldStop;

@@ -27,11 +27,11 @@
             public bool ShouldStopScrapping() => StoppedAt != Ongoing;
             public bool ShouldStopProcessing(int order) => StoppedAt != Ongoing && StoppedAt < order;
 
-            public virtual ScrapResult OnReceive(R item) => ScrapResult.None;
+            public virtual ScrapResult OnReceive(R item, int order) => ScrapResult.None;
 
             public ScrapResult Add(R item, int order)
             {
-                var result = OnReceive(item);
+                var result = OnReceive(item, order);
 
                 if (StoppedAt == Ongoing && result.ShouldStop())
                     StoppedAt = order;

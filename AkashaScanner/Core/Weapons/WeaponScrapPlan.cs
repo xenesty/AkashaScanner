@@ -36,7 +36,7 @@ namespace AkashaScanner.Core.Weapons
                 Navigation.SelectSortOrder(1);
             }
 
-            public override ScrapResult OnReceive(Weapon item)
+            public override ScrapResult OnReceive(Weapon item, int _)
             {
                 if (item.Rarity < MinRarity)
                     return ScrapResult.ShouldDrop | ScrapResult.ShouldStop;
@@ -61,7 +61,7 @@ namespace AkashaScanner.Core.Weapons
                 Navigation.SelectSortOrder(2);
             }
 
-            public override ScrapResult OnReceive(Weapon item)
+            public override ScrapResult OnReceive(Weapon item, int _)
             {
                 if (item.Level < MinLevel || (item.Level == MinLevel && item.Rarity < MinRarity))
                     return ScrapResult.ShouldDrop | ScrapResult.ShouldStop;
