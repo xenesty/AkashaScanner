@@ -47,6 +47,8 @@ namespace AkashaScanner
             //CharacterScrapper.Start(Config);
             //AchievementScrapper.Start(Config);
 #else
+            var success = UIPrerequisites.Install();
+            if (!success) return;
             AppEvents.OnClose += () => Application.Exit();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

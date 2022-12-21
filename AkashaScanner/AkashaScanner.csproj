@@ -50,6 +50,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Update="Resources\Dependencies\MicrosoftEdgeWebview2Setup.exe">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
         <None Update="Resources\tessdata\genshin_eng.traineddata">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
