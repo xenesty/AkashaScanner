@@ -31,7 +31,7 @@ namespace AkashaScanner.Core.Navigation.Keyboard
             foreach (char c in text.ToCharArray())
             {
                 sim.Keyboard.TextEntry(c);
-                Suspender.Sleep(2);
+                Suspender.Sleep(10);
             }
         }
 

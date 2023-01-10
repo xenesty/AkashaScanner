@@ -1,0 +1,70 @@
+﻿@page "/settings"
+
+@inject IConfig ScrapConfig
+
+<div class="content">
+    <div class="actions">
+        <button type="button" class="button button--primary button--action" disabled="@(!Enabled)" @onclick="OnSubmit">Save</button>
+    </div>
+    <Form Context="Context">
+        @if (Data != null)
+        {
+            <Field Label="@MultiplierLabel">
+                <InputNumber class="input" DisplayName="@MultiplierLabel" @bind-Value="Data.SuspendMultiplier" />
+            </Field>
+        }
+    </Form>
+</div>
+
+@code {
+    private const string MultiplierLabel = "Scan Speed Multiplier";
+    private EditContext Context = new EditContext(new object());
+    private bool Enabled { get; set; } = true;
+
+    private FormData? Data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ScrapConfig.Load();
+        Data = new FormData(ScrapConfig);
+        Context = new EditContext(Data);
+        Context.OnValidationStateChanged += (_, _) =>
+        {
+            var enabled = Context.GetValidationMessages().Count() == 0;
+
+            if (Enabled != enabled)
+            {
+                Enabled = enabled;
+                InvokeAsync(StateHasChanged);
+            }
+        };
+    }
+
+    public async Task OnSubmit()
+    {
+        if (Context != null && !Context.Validate()) return;
+        ScrapConfig.Save();
+    }
+
+    private class FormData
+    {
+        private readonly IGlobalConfig ScrapConfig;
+
+        public FormData(IGlobalConfig scrapConfig)
+        {
+            ScrapConfig = scrapConfig;
+        }
+
+        [Display(Name = MultiplierLabel)]
+        [Required]
+        [Range(1, 10)]
+        public double SuspendMultiplier
+        {
+            get => ScrapConfig.SuspendMultiplierMin;
+            set {
+                ScrapConfig.SuspendMultiplierMin = value;
+                ScrapConfig.SuspendMultiplierMax = value * 1.2;
+            }
+        }
+    }
+}

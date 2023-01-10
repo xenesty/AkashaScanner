@@ -52,7 +52,7 @@ namespace AkashaScanner.Core.Navigation.Mouse
                 for (int i = 0; i > dy; --i)
                 {
                     sim.Mouse.VerticalScroll(-1);
-                    Suspender.Sleep(1);
+                    Suspender.Sleep(10);
                 }
             }
             else
@@ -60,7 +60,7 @@ namespace AkashaScanner.Core.Navigation.Mouse
                 for (int i = 0; i < dy; ++i)
                 {
                     sim.Mouse.VerticalScroll(1);
-                    Suspender.Sleep(1);
+                    Suspender.Sleep(10);
                 }
             }
         }

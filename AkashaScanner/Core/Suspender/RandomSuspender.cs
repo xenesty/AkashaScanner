@@ -26,7 +26,6 @@ namespace AkashaScanner.Core.Suspender
 
         private int GetTime(int ms)
         {
-            if (ms <= 10) return ms;
             int min = (int)Math.Round(Config.SuspendMultiplierMin * ms);
             int max = (int)Math.Round(Config.SuspendMultiplierMax * ms);
             if (min >= max) return min;
