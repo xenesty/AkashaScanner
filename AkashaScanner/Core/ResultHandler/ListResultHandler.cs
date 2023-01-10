@@ -9,6 +9,11 @@ namespace AkashaScanner.Core.ResultHandler
         protected ILogger Logger { get; init; } = default!;
         protected readonly List<(int, R)> Items = new();
 
+        public void Init()
+        {
+            Items.Clear();
+        }
+
         public void Add(R item, int order)
         {
             Items.Add((order, item));

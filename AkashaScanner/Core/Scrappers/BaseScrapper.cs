@@ -24,6 +24,7 @@ namespace AkashaScanner.Core.Scappers
 
         protected virtual void Init()
         {
+            ResultHandler.Init();
         }
 
         public virtual void Dispose()

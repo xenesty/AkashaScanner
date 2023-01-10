@@ -16,6 +16,11 @@ namespace AkashaScanner.Core.Achievements
             DataFileRepository = dataFileRepository;
         }
 
+        public void Init()
+        {
+            Dict.Clear();
+        }
+
         public void Add(Achievement item, int order)
         {
             Dict[item.Id] = item.CategoryId;
