@@ -74,7 +74,8 @@
             }
             if (PaimonMoeExporter.Export(out var str, AchievementSelectedFile, importContent, CharacterSelectedFile))
             {
-                await JS.InvokeAsync<bool>("__akasha_saveAsJson", "paimon-moe.json", str);
+                var now = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+                await JS.InvokeAsync<bool>("__akasha_saveAsJson", $"paimon-moe_{now}.json", str);
             }
         }
     }

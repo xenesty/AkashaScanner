@@ -52,7 +52,8 @@
     {
         if (Enabled && GoodExporter.Export(out var str, SelectedWeaponFile, SelectedArtifactFile, SelectedCharacterFile))
         {
-            await JS.InvokeAsync<bool>("__akasha_saveAsJson", "GOOD.json", str);
+            var now = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            await JS.InvokeAsync<bool>("__akasha_saveAsJson", $"GOOD_{now}.json", str);
         }
     }
 }
