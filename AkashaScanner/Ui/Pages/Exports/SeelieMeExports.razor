@@ -1,0 +1,74 @@
+﻿@inherits RazorComponent
+@page "/exports/seelieme"
+
+@using Core.Exporters
+@using Core.DataFiles
+@using Core.DataCollections
+@inject IDataFileRepository<AchievementOutput> AchievementDataFiles
+@inject IAchievementCollection AchievementCollections
+@inject IJSRuntime JS
+
+<ExportLayout Enabled="@(AchievementSelectedFile != null)" OnSubmit="@HandleSubmit">
+    <div>
+        <div class="import__notice">
+            If you use Seelie.me not only for achievement tracking,
+            consider exporting data from <a class="link" href="https://seelie.me/settings" target="_blank">Seelie.me</a> first and
+            importing it below so it will not override your existing data.
+        </div>
+        <form class="import__file">
+            <InputFile id="@fileInputId" class="file-input" accept=".json" OnChange="@LoadFile" />
+            <button class="button button--outline reset-button" type="reset" @onclick="@ResetFile">Clear</button>
+        </form>
+    </div>
+    <DataFileList Title="Export achievements"
+                  FileList="@AchievementFileList" @bind-Value="@AchievementSelectedFile" />
+</ExportLayout>
+
+@code {
+    private const string fileInputId = "seelie-me-exports-file-input";
+    private IDataFile<AchievementOutput>? AchievementSelectedFile { get; set; }
+    private List<IDataFile<AchievementOutput>> AchievementFileList { get; set; } = new();
+    private IBrowserFile? import;
+
+    protected override Task OnInitializedAsync()
+    {
+        Initialize();
+        AchievementFileList = AchievementDataFiles.List();
+        AchievementSelectedFile = AchievementFileList.FirstOrDefault();
+        return Task.CompletedTask;
+    }
+
+    private void ResetFile()
+    {
+        import = null;
+    }
+
+
+    private void LoadFile(InputFileChangeEventArgs e)
+    {
+        import = e.File;
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (AchievementSelectedFile != null)
+        {
+            string importContent = string.Empty;
+            if (import != null)
+            {
+                var value = await JS.InvokeAsync<string>("__akasha_getInputValue", fileInputId);
+                if (!string.IsNullOrEmpty(value))
+                {
+                    using var stream = import.OpenReadStream();
+                    using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
+                    importContent = await reader.ReadToEndAsync();
+                }
+            }
+            if (SeelieMeExporter.Export(out var str, AchievementSelectedFile, importContent))
+            {
+                var now = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+                await JS.InvokeAsync<bool>("__akasha_saveAsJson", $"seelie-me_{now}.json", str);
+            }
+        }
+    }
+}

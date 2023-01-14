@@ -1,0 +1,17 @@
+﻿.import__notice {
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.import__file {
+    display: flex;
+}
+
+::deep .file-input {
+    flex: 1 1 0;
+}
+
+.reset-button {
+    margin-left: 12px;
+    flex: none;
+}
