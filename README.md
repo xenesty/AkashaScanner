@@ -22,7 +22,7 @@ A Genshin Impact tool that extracts your account data, including achievements, c
 ## Features
 
 - Scans achievements, characters, artifacts, and weapons by taking and analyzing screenshots of the game automatically
-- Exports achievements (and characters) to a format compatible with [Paimon.moe](https://paimon.moe), a tool for you to track your achievement progress
+- Exports achievements (and characters) to a format compatible with [Paimon.moe](https://paimon.moe) and [Seelie.me](https://seelie.me), a tool for you to track your achievement progress
 - Exports game data in `GOOD`,
 a format compatible with tools like
 [Genshin Optimizer](https://frzyc.github.io/genshin-optimizer),
@@ -114,9 +114,9 @@ For now, you can modify the JSON file under the `ScannedData` folder.
 I may consider writing a document about the JSON file schema,
 though I think they are pretty self-explanatory.
 
-### How do I import the scan results to Paimon.moe?
-First, export your scan results to a format compatible with Paimon.moe using the Akasha Scanner.
-Then, go to [Settings](https://paimon.moe/settings) in Paimon.moe.
+### How do I import the scan results to Paimon.moe/Seelie.me?
+First, export your scan results to a format compatible with Paimon.moe/Seelie.me using the Akasha Scanner.
+Then, go to [Paimon.moe](https://paimon.moe/settings) or [Seelie.me](https://seelie.me/settings).
 Select "Export & Import Data" and import the file you just exported.
 
 ### I have other questions
