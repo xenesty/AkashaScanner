@@ -37,7 +37,7 @@ namespace AkashaScanner.Core.Scappers
 
         protected E? GetItemEntry(ITextRecognitionService ocr, Bitmap image)
         {
-            var name = string.Join(' ', ocr.FindLines(image, NameRect, true));
+            var name = string.Join(' ', ocr.FindLines(image, region: NameRect, inverted: true));
             var item = InventoryCollection.SearchByName(name);
             return item;
         }

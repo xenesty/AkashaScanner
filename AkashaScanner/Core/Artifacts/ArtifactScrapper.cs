@@ -142,7 +142,7 @@ namespace AkashaScanner.Core.Artifacts
 
         private void LoadMainStat(ITextRecognitionService ocr, Bitmap image, Artifact artifact)
         {
-            var text = ocr.FindText(image, MainStatRect, true);
+            var text = ocr.FindText(image, region: MainStatRect, inverted: true);
             (int score, string? value) = text.FuzzySearch(MainStatsList);
             if (score >= IsValidMainStatScore)
             {
@@ -182,7 +182,7 @@ namespace AkashaScanner.Core.Artifacts
 
         private void LoadLevel(ITextRecognitionService ocr, Bitmap image, Artifact artifact)
         {
-            var text = ocr.FindText(image, LevelRect, true);
+            var text = ocr.FindText(image, region: LevelRect, inverted: true);
             text = Regex.Replace(text, @"[\D]", string.Empty);
             if (int.TryParse(text, out int level))
             {
@@ -196,7 +196,7 @@ namespace AkashaScanner.Core.Artifacts
 
         private void LoadSubStats(ITextRecognitionService ocr, Bitmap image, Artifact artifact)
         {
-            var lines = ocr.FindLines(image, SubStatsRect);
+            var lines = ocr.FindLines(image, region: SubStatsRect);
             foreach (var line in lines)
             {
                 if (line.Length < 5) continue;

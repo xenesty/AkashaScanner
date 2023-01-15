@@ -102,7 +102,7 @@ namespace AkashaScanner.Core.Weapons
 
         private void LoadLevel(ITextRecognitionService ocr, Bitmap image, Weapon weapon)
         {
-            var text = ocr.FindText(image, LevelRect, true);
+            var text = ocr.FindText(image, region: LevelRect, inverted: true);
             (var score, var output) = text.FuzzySearch(AllLevelsText);
             if (output != null)
             {
@@ -119,7 +119,7 @@ namespace AkashaScanner.Core.Weapons
 
         private void LoadRefinement(ITextRecognitionService ocr, Bitmap image, Weapon weapon)
         {
-            var text = ocr.FindChar(image, RefinementRect, true);
+            var text = ocr.FindChar(image, region: RefinementRect, inverted: true);
             text = Regex.Replace(text, @"[^\d]", string.Empty);
             if (int.TryParse(text, out int refinement))
             {

@@ -121,7 +121,7 @@ namespace AkashaScanner.Core.Scappers
         private int GetItemCount()
         {
             using var img = Screenshots.Capture(ItemCountRect);
-            var text = Ocr.FindText(img, true);
+            var text = Ocr.FindText(img, inverted: true);
             if (!text.TryParseFraction(out (int, int) output))
                 throw new IOException("Cannot get item count");
             return output.Item1;
@@ -143,7 +143,7 @@ namespace AkashaScanner.Core.Scappers
 
         protected CharacterEntry? GetEquipped(ITextRecognitionService ocr, Bitmap image, Dictionary<string, string> CharacterNameOverrides)
         {
-            var text = ocr.FindText(image, EquippedRect).Trim();
+            var text = ocr.FindText(image, region: EquippedRect).Trim();
             foreach (var (actualName, givenName) in CharacterNameOverrides)
             {
                 var score = givenName.FuzzySearch(text);
@@ -160,7 +160,7 @@ namespace AkashaScanner.Core.Scappers
         private bool IsItemUnrelated(Bitmap img)
         {
             if (UnrelatedItems.Count == 0) return false;
-            var text = Ocr.FindText(img);
+            var text = Ocr.FindText(img, inverted: true);
             (int score, string _) = text.FuzzySearch(UnrelatedItems);
             return score >= IsUnrelatedMinScore;
         }

@@ -8,20 +8,32 @@ namespace AkashaScanner.Core.TextRecognition.Tesseract
     {
         private static readonly string TrainedDataPath = Path.Combine(Utils.ExecutableDirectory, "Resources", "tessdata");
         private const string TrainedDataLanguage = "genshin_eng";
+        private const int MaxColorVariation = 10;
 
         static TesseractService()
         {
             TesseractEnviornment.CustomSearchPath = Utils.ExecutableDirectory;
         }
 
-        private static float NormalFn(byte red, byte green, byte blue)
+        private static byte NormalFn(byte red, byte green, byte blue)
         {
-            return red * .3f + green * .59f + blue * .11f;
+            return (byte)Math.Round(red * .3f + green * .59f + blue * .11f);
         }
 
-        private static float InvertFn(byte red, byte green, byte blue)
+        private static byte InvertFn(byte red, byte green, byte blue)
         {
-            return 1 - NormalFn(red, green, blue);
+            return (byte)(255 - NormalFn(red, green, blue));
+        }
+
+        private static Func<byte, byte, byte, byte> CreateColorFn(Color color)
+        {
+            return (byte red, byte green, byte blue) =>
+            {
+                if (Math.Abs(red - color.R) > MaxColorVariation) return 255;
+                if (Math.Abs(green - color.G) > MaxColorVariation) return 255;
+                if (Math.Abs(blue - color.B) > MaxColorVariation) return 255;
+                return 0;
+            };
         }
 
         private readonly ObjectPool<TesseractEngine> Engines;
@@ -37,100 +49,23 @@ namespace AkashaScanner.Core.TextRecognition.Tesseract
             PixPool = new((size) => Pix.Create(size.Item1, size.Item2, 8));
         }
 
-        public string FindChar(Bitmap bitmap, bool inverted = false)
+
+        public string FindChar(Bitmap bitmap, Rectangle? region = null, bool inverted = false, Color? color = null)
         {
             using var instance = new TesseractInstance(this);
-            return instance.FindChar(bitmap, inverted);
+            return instance.FindChar(bitmap, region, inverted, color);
         }
 
-        public string FindChar(Bitmap bitmap, Func<byte, byte, byte, float> fn)
+        public string FindText(Bitmap bitmap, Rectangle? region = null, bool inverted = false, Color? color = null)
         {
             using var instance = new TesseractInstance(this);
-            return instance.FindChar(bitmap, fn);
+            return instance.FindText(bitmap, region, inverted, color);
         }
 
-        public string FindChar(Bitmap bitmap, Rectangle region, bool inverted = false)
+        public List<string> FindLines(Bitmap bitmap, Rectangle? region = null, bool inverted = false, Color? color = null)
         {
             using var instance = new TesseractInstance(this);
-            return instance.FindChar(bitmap, region, inverted);
-        }
-
-        public string FindChar(Bitmap bitmap, Rectangle region, Func<byte, byte, byte, float> fn)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.FindChar(bitmap, region, fn);
-        }
-
-        public string FindText(Bitmap bitmap, bool inverted = false)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.FindText(bitmap, inverted);
-        }
-
-        public string FindText(Bitmap bitmap, Func<byte, byte, byte, float> fn)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.FindText(bitmap, fn);
-        }
-
-        public string FindText(Bitmap bitmap, Rectangle region, bool inverted = false)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.FindText(bitmap, region, inverted);
-        }
-
-        public string FindText(Bitmap bitmap, Rectangle region, Func<byte, byte, byte, float> fn)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.FindText(bitmap, region, fn);
-        }
-
-        public List<string> FindLines(Bitmap bitmap, bool inverted = false)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.FindLines(bitmap, inverted);
-        }
-
-        public List<string> FindLines(Bitmap bitmap, Func<byte, byte, byte, float> fn)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.FindLines(bitmap, fn);
-        }
-
-        public List<string> FindLines(Bitmap bitmap, Rectangle region, bool inverted = false)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.FindLines(bitmap, region, inverted);
-        }
-
-        public List<string> FindLines(Bitmap bitmap, Rectangle region, Func<byte, byte, byte, float> fn)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.FindLines(bitmap, region, fn);
-        }
-
-        public List<string> Find(Bitmap bitmap, bool inverted = false)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.Find(bitmap, inverted);
-        }
-
-        public List<string> Find(Bitmap bitmap, Func<byte, byte, byte, float> fn)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.Find(bitmap, fn);
-        }
-
-        public List<string> Find(Bitmap bitmap, Rectangle region, bool inverted = false)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.Find(bitmap, region, inverted);
-        }
-
-        public List<string> Find(Bitmap bitmap, Rectangle region, Func<byte, byte, byte, float> fn)
-        {
-            using var instance = new TesseractInstance(this);
-            return instance.Find(bitmap, region, fn);
+            return instance.FindLines(bitmap, region, inverted, color);
         }
 
         public ITextRecognitionService GetInstance()
@@ -166,24 +101,9 @@ namespace AkashaScanner.Core.TextRecognition.Tesseract
                 return new TesseractInstance(Service);
             }
 
-            public string FindChar(Bitmap bitmap, bool inverted = false)
+            public string FindChar(Bitmap bitmap, Rectangle? region = null, bool inverted = false, Color? color = null)
             {
-                return FindChar(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height), inverted);
-            }
-
-            public string FindChar(Bitmap bitmap, Func<byte, byte, byte, float> fn)
-            {
-                return FindChar(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height), fn);
-            }
-
-            public string FindChar(Bitmap bitmap, Rectangle region, bool inverted = false)
-            {
-                return FindChar(bitmap, region, inverted ? InvertFn : NormalFn);
-            }
-
-            public string FindChar(Bitmap bitmap, Rectangle region, Func<byte, byte, byte, float> fn)
-            {
-                using var page = Engine.Data.Process(Service.ToPix(bitmap, region, fn), PageSegMode.SingleChar);
+                using var page = Engine.Data.Process(Service.ToPix(bitmap, region, inverted, color), PageSegMode.SingleChar);
                 using var iter = page.GetIterator();
                 iter.Begin();
                 var result = iter.GetText(PageIteratorLevel.Word);
@@ -193,24 +113,9 @@ namespace AkashaScanner.Core.TextRecognition.Tesseract
                 return result ?? "";
             }
 
-            public string FindText(Bitmap bitmap, bool inverted = false)
+            public string FindText(Bitmap bitmap, Rectangle? region = null, bool inverted = false, Color? color = null)
             {
-                return FindText(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height), inverted);
-            }
-
-            public string FindText(Bitmap bitmap, Func<byte, byte, byte, float> fn)
-            {
-                return FindText(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height), fn);
-            }
-
-            public string FindText(Bitmap bitmap, Rectangle region, bool inverted = false)
-            {
-                return FindText(bitmap, region, inverted ? InvertFn : NormalFn);
-            }
-
-            public string FindText(Bitmap bitmap, Rectangle region, Func<byte, byte, byte, float> fn)
-            {
-                using var page = Engine.Data.Process(Service.ToPix(bitmap, region, fn), PageSegMode.SingleLine);
+                using var page = Engine.Data.Process(Service.ToPix(bitmap, region, inverted, color), PageSegMode.SingleLine);
                 using var iter = page.GetIterator();
                 iter.Begin();
                 var result = iter.GetText(PageIteratorLevel.Block)?.Trim() ?? "";
@@ -220,58 +125,10 @@ namespace AkashaScanner.Core.TextRecognition.Tesseract
                 return result ?? "";
             }
 
-            public List<string> FindLines(Bitmap bitmap, bool inverted = false)
-            {
-                return FindLines(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height), inverted);
-            }
-
-            public List<string> FindLines(Bitmap bitmap, Func<byte, byte, byte, float> fn)
-            {
-                return FindLines(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height), fn);
-            }
-
-            public List<string> FindLines(Bitmap bitmap, Rectangle region, bool inverted = false)
-            {
-                return FindLines(bitmap, region, inverted ? InvertFn : NormalFn);
-            }
-
-            public List<string> FindLines(Bitmap bitmap, Rectangle region, Func<byte, byte, byte, float> fn)
+            public List<string> FindLines(Bitmap bitmap, Rectangle? region = null, bool inverted = false, Color? color = null)
             {
                 List<string> texts = new();
-                using var page = Engine.Data.Process(Service.ToPix(bitmap, region, fn), PageSegMode.SingleBlock);
-                using var iter = page.GetIterator();
-                iter.Begin();
-                do
-                {
-                    var text = iter.GetText(PageIteratorLevel.TextLine);
-                    if (!string.IsNullOrWhiteSpace(text)) texts.Add(text.Trim());
-                }
-                while (iter.Next(PageIteratorLevel.TextLine));
-
-                Service.Logger.LogDebug("Found `{result}`", string.Join(" / ", texts));
-
-                return texts ?? new();
-            }
-
-            public List<string> Find(Bitmap bitmap, bool inverted = false)
-            {
-                return Find(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height), inverted);
-            }
-
-            public List<string> Find(Bitmap bitmap, Func<byte, byte, byte, float> fn)
-            {
-                return Find(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height), fn);
-            }
-
-            public List<string> Find(Bitmap bitmap, Rectangle region, bool inverted = false)
-            {
-                return Find(bitmap, region, inverted ? InvertFn : NormalFn);
-            }
-
-            public List<string> Find(Bitmap bitmap, Rectangle region, Func<byte, byte, byte, float> fn)
-            {
-                List<string> texts = new();
-                using var page = Engine.Data.Process(Service.ToPix(bitmap, region, fn), PageSegMode.Auto);
+                using var page = Engine.Data.Process(Service.ToPix(bitmap, region, inverted, color), PageSegMode.SingleBlock);
                 using var iter = page.GetIterator();
                 iter.Begin();
                 do
@@ -287,15 +144,17 @@ namespace AkashaScanner.Core.TextRecognition.Tesseract
             }
         }
 
-        private unsafe Pix ToPix(Bitmap bitmap, Rectangle region, Func<byte, byte, byte, float> fn)
+        private unsafe Pix ToPix(Bitmap bitmap, Rectangle? region, bool inverted, Color? color)
         {
             BitmapData? imgData = null;
+            var area = region ?? new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+            var fn = color != null ? CreateColorFn(color.Value) : inverted ? InvertFn : NormalFn;
 
             lock (bitmap)
             {
                 try
                 {
-                    imgData = bitmap.LockBits(region, ImageLockMode.ReadOnly, bitmap.PixelFormat);
+                    imgData = bitmap.LockBits(area, ImageLockMode.ReadOnly, bitmap.PixelFormat);
 
                     var width = imgData.Width;
                     var height = imgData.Height;
@@ -318,8 +177,7 @@ namespace AkashaScanner.Core.TextRecognition.Tesseract
                             byte blue = pixelPtr[0];
                             byte green = pixelPtr[1];
                             byte red = pixelPtr[2];
-                            float val = fn(red, green, blue);
-                            PixData.SetDataByte(pixLine, x, (byte)Math.Round(val));
+                            PixData.SetDataByte(pixLine, x, fn(red, green, blue));
                         }
                     }
                     return pix;

@@ -243,19 +243,19 @@ namespace AkashaScanner.Core.Characters
 
         private CharacterEntry? LoadEntry(Bitmap image, Character character, Dictionary<string, string> CharacterNameOverrides)
         {
-            var friendship = Ocr.FindText(image, FriendshipRect, true);
+            var friendship = Ocr.FindText(image, region: FriendshipRect, inverted: true);
             var hasFriendship = ProcessFriendship(character, friendship);
             if (hasFriendship)
             {
                 // Is not the traveler
-                var name = Ocr.FindText(image, NameRect, true);
+                var name = Ocr.FindText(image, region: NameRect, inverted: true);
                 return ProcessName(character, name, CharacterNameOverrides);
             }
             else
             {
                 // Is the traveler
                 var elementImg = Screenshots.Capture(ElementRect);
-                var element = Ocr.FindText(elementImg, true);
+                var element = Ocr.FindText(elementImg, inverted: true);
                 return ProcessTravelerElement(character, element);
             }
         }
@@ -282,7 +282,7 @@ namespace AkashaScanner.Core.Characters
 
         private void LoadLevel(Bitmap image, Character character)
         {
-            var text = Ocr.FindText(image, LevelRect, true);
+            var text = Ocr.FindText(image, region: LevelRect, inverted: true);
             (var score, var output) = text.FuzzySearch(AllLevelsText);
             (var level, var ascension) = AllLevels[output!];
             Logger.LogDebug("Identify {text} as (Level: {level}, Ascension: {ascension}) with confidence {score}/100", text, level, ascension, score);
@@ -396,13 +396,13 @@ namespace AkashaScanner.Core.Characters
         private int GetTalentLevel(Bitmap image, string field)
         {
             using var ocr = Ocr.GetInstance();
-            var levelText = ocr.FindText(image, TalentLevelRect, true);
+            var levelText = ocr.FindText(image, region: TalentLevelRect, inverted: true);
             var digitLevelText = Regex.Replace(levelText, @"\D", string.Empty);
             if (int.TryParse(digitLevelText, out int currentLevel))
             {
                 Logger.LogDebug("Identify {text} as {level} when parsing talent level of {field}", levelText, currentLevel, field);
                 int bonusLevel = 0;
-                var bonusText = ocr.FindText(image, TalentBonusRect, true);
+                var bonusText = ocr.FindText(image, region: TalentBonusRect, inverted: true);
                 var noDigitBonusText = Regex.Replace(bonusText, @"\d", string.Empty);
                 if (noDigitBonusText.FuzzySearch("Talent Lv. +") > TalentBonusScore)
                 {
