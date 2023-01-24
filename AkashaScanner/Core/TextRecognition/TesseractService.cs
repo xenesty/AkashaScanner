@@ -12,6 +12,7 @@ namespace AkashaScanner.Core.TextRecognition.Tesseract
 
         static TesseractService()
         {
+            Environment.SetEnvironmentVariable("OMP_THREAD_LIMIT", "1");
             TesseractEnviornment.CustomSearchPath = Utils.ExecutableDirectory;
         }
 

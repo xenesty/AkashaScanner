@@ -12,7 +12,6 @@ using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AkashaScanner.Core.Artifacts
 {
@@ -112,7 +111,7 @@ namespace AkashaScanner.Core.Artifacts
 
         protected override Artifact ProcessImage(Bitmap image, IArtifactConfig config)
         {
-            using var ocr = Ocr.GetInstance();
+            using var ocr = Ocr.GetInstance(); 
             Artifact artifact = new();
             LoadEntry(ocr, image, artifact);
             LoadRarity(image, artifact);
