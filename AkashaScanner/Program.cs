@@ -32,18 +32,20 @@ namespace AkashaScanner
 
             Config.Load();
 
+            Config.ArtifactMinLevel = 20;
+
             //Weapons.LoadRemote().Wait();
             //Artifacts.LoadRemote().Wait();
             //Characters.LoadRemote().Wait();
             //Achievements.LoadRemote().Wait();
 
             //Weapons.LoadLocal().Wait();
-            //Artifacts.LoadLocal().Wait();
-            //Characters.LoadLocal().Wait();
+            Artifacts.LoadLocal().Wait();
+            Characters.LoadLocal().Wait();
             //Achievements.LoadLocal().Wait();
 
             //WeaponScrapper.Start(Config);
-            //ArtifactScrapper.Start(Config);
+            ArtifactScrapper.Start(Config);
             //CharacterScrapper.Start(Config);
             //AchievementScrapper.Start(Config);
 #else

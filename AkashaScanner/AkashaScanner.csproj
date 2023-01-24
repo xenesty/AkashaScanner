@@ -53,6 +53,9 @@
         <None Update="Resources\Dependencies\MicrosoftEdgeWebview2Setup.exe">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Update="Resources\InGameFont.ttf">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
         <None Update="Resources\tessdata\genshin_eng.traineddata">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

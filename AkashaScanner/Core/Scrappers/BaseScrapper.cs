@@ -71,9 +71,8 @@ namespace AkashaScanner.Core.Scappers
             Control.OnStatusChange -= InterruptOnInactive;
         }
 
-        public bool Start(C config)
+        protected bool SetProcessActive()
         {
-            ScrapPlan.Configure(config);
             Control.OnStatusChange += WaitProcessActive;
             Control.SetActive();
             lock (Mutex)
@@ -86,7 +85,13 @@ namespace AkashaScanner.Core.Scappers
             Control.OnStatusChange -= WaitProcessActive;
 
             var rect = Control.GetWindowDimension();
-            if (!Win.SetRect(rect))
+            return Win.SetRect(rect);
+        }
+
+        public bool Start(C config)
+        {
+            ScrapPlan.Configure(config);
+            if (!SetProcessActive())
             {
                 return false;
             }

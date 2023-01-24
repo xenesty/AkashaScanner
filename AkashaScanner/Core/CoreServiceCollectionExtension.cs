@@ -32,6 +32,7 @@ namespace AkashaScanner.Core
                 .AddSingleton<ISuspender, RandomSuspender>()
                 .AddSingleton<IProcessControl, GenshinProcessControl>()
                 .AddScoped<ITextRecognitionService, TesseractService>()
+                .AddScoped<TemplateMatchingService>()
                 .AddScoped<IScreenshotProvider, ScreenshotProvider>()
 
                 .AddSingleton<IMouseService, WindowsMouseService>()
@@ -67,7 +68,7 @@ namespace AkashaScanner.Core
                 .AddScoped<IDataFileRepository<ArtifactOutput>, ArtifactDataFileRepository>()
                 .AddScoped<IResultHandler<Artifact>, ArtifactResultHandler>()
                 .AddScoped<IScrapPlanManager<IArtifactConfig, Artifact>, ArtifactScrapPlan>()
-                .AddScoped<IScrapper<IArtifactConfig>, ArtifactScrapper>()
+                .AddScoped<IScrapper<IArtifactConfig>, ExperimentalArtifactScrapper>()
 
                 .AddScoped<IDataFileRepository<CharacterOutput>, CharacterDataFileRepository>()
                 .AddScoped<IResultHandler<Character>, CharacterResultHandler>()

@@ -17,7 +17,7 @@ namespace AkashaScanner.Core.Artifacts
 {
     public class ArtifactScrapper : EquipableScrapper<Artifact, ArtifactEntry, IArtifactConfig>
     {
-        private static readonly Dictionary<string, ArtifactStatType> MainStatsMapping = new()
+        protected static readonly Dictionary<string, ArtifactStatType> MainStatsMapping = new()
         {
             ["HP"] = ArtifactStatType.HpPercent,
             ["ATK"] = ArtifactStatType.AtkPercent,
@@ -37,7 +37,7 @@ namespace AkashaScanner.Core.Artifacts
             ["Dendro DMG Bonus"] = ArtifactStatType.DendroDmg,
         };
 
-        private static readonly Dictionary<string, ArtifactStatType> SubStatsMapping = new()
+        protected static readonly Dictionary<string, ArtifactStatType> SubStatsMapping = new()
         {
             ["HP+.%"] = ArtifactStatType.HpPercent,
             ["HP+"] = ArtifactStatType.HpFlat,
@@ -65,10 +65,10 @@ namespace AkashaScanner.Core.Artifacts
         private static readonly List<string> ArtifactUnrelatedItems = new() { "Sanctifying Essence", "Sanctifying Unction" };
         protected override List<string> UnrelatedItems => ArtifactUnrelatedItems;
 
-        private Rectangle MainStatRect;
-        private Rectangle RarityRect;
-        private Rectangle LevelRect;
-        private Rectangle SubStatsRect;
+        protected Rectangle MainStatRect;
+        protected Rectangle RarityRect;
+        protected Rectangle LevelRect;
+        protected Rectangle SubStatsRect;
         private int RarityStarAreaMin;
         private int RarityStarAreaMax;
 
@@ -111,37 +111,36 @@ namespace AkashaScanner.Core.Artifacts
 
         protected override Artifact ProcessImage(Bitmap image, IArtifactConfig config)
         {
-            using var ocr = Ocr.GetInstance(); 
             Artifact artifact = new();
-            LoadEntry(ocr, image, artifact);
+            LoadEntry(image, artifact);
             LoadRarity(image, artifact);
-            LoadLevel(ocr, image, artifact);
-            LoadSubStats(ocr, image, artifact);
-            LoadEquipped(ocr, image, artifact, config.CharacterNameOverrides);
+            LoadLevel(image, artifact);
+            LoadSubStats(image, artifact);
+            LoadEquipped(image, artifact, config.CharacterNameOverrides);
             Logger.LogInformation("Artifact: {artifact}", artifact);
             return artifact;
         }
 
-        private void LoadEntry(ITextRecognitionService ocr, Bitmap image, Artifact artifact)
+        private void LoadEntry(Bitmap image, Artifact artifact)
         {
-            var entry = GetItemEntry(ocr, image);
+            var entry = GetItemEntry(Ocr, image);
             if (entry != null)
             {
                 var slot = entry.Slot;
                 artifact.Slot = slot;
                 artifact.SetName = entry.SetName;
-                if (slot == ArtifactSlot.Flower)
+                if (artifact.Slot == ArtifactSlot.Flower)
                     artifact.MainStat = ArtifactStatType.HpFlat;
-                else if (slot == ArtifactSlot.Plume)
+                else if (artifact.Slot == ArtifactSlot.Plume)
                     artifact.MainStat = ArtifactStatType.AtkFlat;
-                else if (slot != ArtifactSlot.Invalid)
-                    LoadMainStat(ocr, image, artifact);
+                else if (artifact.Slot != ArtifactSlot.Invalid)
+                    LoadMainStat(image, artifact);
             }
         }
 
-        private void LoadMainStat(ITextRecognitionService ocr, Bitmap image, Artifact artifact)
+        protected virtual void LoadMainStat(Bitmap image, Artifact artifact)
         {
-            var text = ocr.FindText(image, region: MainStatRect, inverted: true);
+            var text = Ocr.FindText(image, region: MainStatRect, inverted: true);
             (int score, string? value) = text.FuzzySearch(MainStatsList);
             if (score >= IsValidMainStatScore)
             {
@@ -153,7 +152,7 @@ namespace AkashaScanner.Core.Artifacts
             }
         }
 
-        private void LoadRarity(Bitmap image, Artifact artifact)
+        protected virtual void LoadRarity(Bitmap image, Artifact artifact)
         {
             using var img = image.Clone(RarityRect, image.PixelFormat);
             using var mat = img.ToMat();
@@ -179,9 +178,9 @@ namespace AkashaScanner.Core.Artifacts
             }
         }
 
-        private void LoadLevel(ITextRecognitionService ocr, Bitmap image, Artifact artifact)
+        protected virtual void LoadLevel(Bitmap image, Artifact artifact)
         {
-            var text = ocr.FindText(image, region: LevelRect, inverted: true);
+            var text = Ocr.FindText(image, region: LevelRect, inverted: true);
             text = Regex.Replace(text, @"[\D]", string.Empty);
             if (int.TryParse(text, out int level))
             {
@@ -193,9 +192,9 @@ namespace AkashaScanner.Core.Artifacts
             }
         }
 
-        private void LoadSubStats(ITextRecognitionService ocr, Bitmap image, Artifact artifact)
+        protected virtual void LoadSubStats(Bitmap image, Artifact artifact)
         {
-            var lines = ocr.FindLines(image, region: SubStatsRect);
+            var lines = Ocr.FindLines(image, region: SubStatsRect);
             foreach (var line in lines)
             {
                 if (line.Length < 5) continue;
@@ -226,10 +225,9 @@ namespace AkashaScanner.Core.Artifacts
                 }
             }
         }
-
-        private void LoadEquipped(ITextRecognitionService ocr, Bitmap image, Artifact artifact, Dictionary<string, string> CharacterNameOverrides)
+        private void LoadEquipped(Bitmap image, Artifact artifact, Dictionary<string, string> CharacterNameOverrides)
         {
-            var character = GetEquipped(ocr, image, CharacterNameOverrides);
+            var character = GetEquipped(Ocr, image, CharacterNameOverrides);
             if (character != null)
             {
                 artifact.EquippedCharacter = character.Name;
