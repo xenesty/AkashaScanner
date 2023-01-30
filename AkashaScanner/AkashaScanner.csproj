@@ -13,7 +13,7 @@
         <Configurations>Debug;Release;Headless</Configurations>
         <Platforms>x64</Platforms>
         <Title>Akasha Scanner</Title>
-        <Version>0.4.0</Version>
+        <Version>0.4.1</Version>
         <Copyright>MIT</Copyright>
         <RepositoryUrl>https://github.com/xenesty/AkashaScanner</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>

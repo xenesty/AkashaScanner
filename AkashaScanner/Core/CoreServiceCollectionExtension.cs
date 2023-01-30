@@ -68,7 +68,7 @@ namespace AkashaScanner.Core
                 .AddScoped<IDataFileRepository<ArtifactOutput>, ArtifactDataFileRepository>()
                 .AddScoped<IResultHandler<Artifact>, ArtifactResultHandler>()
                 .AddScoped<IScrapPlanManager<IArtifactConfig, Artifact>, ArtifactScrapPlan>()
-                .AddScoped<IScrapper<IArtifactConfig>, ExperimentalArtifactScrapper>()
+                .AddScoped<IScrapper<IArtifactConfig>, ArtifactScrapper>()
 
                 .AddScoped<IDataFileRepository<CharacterOutput>, CharacterDataFileRepository>()
                 .AddScoped<IResultHandler<Character>, CharacterResultHandler>()
