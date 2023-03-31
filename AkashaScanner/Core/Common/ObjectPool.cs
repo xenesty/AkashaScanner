@@ -96,7 +96,7 @@ namespace AkashaScanner.Core
 
     public class ObjectPool<T, K> : IDisposable where K : IEquatable<K>
     {
-        private readonly Dictionary<K, ObjectPool<T>> Pools = new();
+        private readonly ConcurrentDictionary<K, ObjectPool<T>> Pools = new();
 
         private readonly Func<K, T> Factory;
         private bool Disposed;
