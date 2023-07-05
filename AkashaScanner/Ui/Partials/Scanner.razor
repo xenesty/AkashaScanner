@@ -32,7 +32,11 @@
 </div>
 <Modal Visible="@ShowModal">
     <div class="modal__content">
-        @if (Status == ScanStatus.Running)
+        @if (Status == ScanStatus.CountingDown) {
+            <div>Starting scan in @Countdown</div>
+            <Loading />
+        }
+        else if (Status == ScanStatus.Running)
         {
             <div>Scanning in progress</div>
             <Loading />
@@ -107,6 +111,7 @@
 
     private EditContext? Context;
     private ScanStatus Status { get; set; } = ScanStatus.Interrupted;
+    private int Countdown;
     private bool ShowModal { get; set; }
 
     private bool BtnEnabled => Enabled && ProcStatus.IsRunning();
@@ -115,6 +120,11 @@
     {
         if (Context != null && !Context.Validate()) return;
         ShowModal = true;
+        Status = ScanStatus.CountingDown;
+        for (Countdown = 3; Countdown > 0; Countdown--) {
+            StateHasChanged();
+            await Task.Delay(1000);
+        }
         Status = ScanStatus.Running;
         StateHasChanged();
         await Task.Run(() =>
@@ -135,6 +145,7 @@
     private enum ScanStatus
     {
         Idle,
+        CountingDown,
         Running,
         Canceling,
         Success,
